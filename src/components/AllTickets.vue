@@ -17,7 +17,7 @@
       <v-data-table
         :headers="headers"
         :items="this.alltickets"
-        item-key="text"
+        item-key="id"
         :sort-by="['createdAt']"
         :sort-desc="[true]"
         :search="search"
@@ -47,7 +47,7 @@
            <v-chip x-small :color="getColor(item.priority)" dark>{{ priorities[item.priority] || 'None' }}</v-chip>
          </template>
          <template v-slot:item.createdAt="{ item }">
-            {{ new Date(item.createdAt).toLocaleString() }}
+             {{ new Date(item.createdAt).toLocaleDateString() }}
          </template>
          <template v-slot:expanded-item="{ headers, item }">
               <td :colspan="headers.length">
@@ -57,14 +57,13 @@
          <template v-slot:item.actions="{ item }">
            <v-icon
              small
-             class="mr-2"
              @click="editTicket(item)"
            >
              mdi-pencil
            </v-icon>
-              <v-icon
-                 small
-                 @click="deleteItem(item)"
+           <v-icon
+             small
+             @click="deleteItem(item)"
            >
              mdi-delete
            </v-icon>
@@ -104,11 +103,11 @@
           'None',
         ],
         prioritiesColors: [
-          'purple lighten-2',
-          'red lighten-1',
-          'blue-grey darken-1',
-          'grey darken-3',
-          'grey darken-3',
+          'deep-orange accent-4',
+          'deep-orange accent-2',
+          'deep-orange accent-1',
+          'deep-orange lighten-4',
+          'deep-orange lighten-5',
         ],
       }
     },
