@@ -188,6 +188,7 @@
       alwaysOnItems: [
         { title:"Home", href:"/", icon:"mdi-home-outline" },
         { title:"All Tickets", href:"/alltickets", icon:"mdi-card-search-outline" },
+        { title:"Analytics", href:"/analytics", icon:"mdi-card-search-outline" },
       ],
       items: [
         { title:"New Ticket", href:"/addticket", icon:"mdi-note-plus-outline" },
