@@ -19,8 +19,7 @@
 
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              elevation="2"
-              fab
+              elevation="10"
               icon
               v-bind="attrs"
               v-on="on"

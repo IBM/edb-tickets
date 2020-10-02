@@ -71,18 +71,23 @@
       </v-list-item-content>
     </v-list-item>
     <v-switch
+            v-model="dark_theme"
             color="deep-orange darken-3"
             label="Use dark theme"
-            input-value="true"
             @change="toggleDarkTheme()"
     ></v-switch>
   </v-card>
 </template>
 <script>
   export default {
+    data: function() {
+      return {
+        dark_theme: this.$vuetify.theme.dark
+      }
+    },
     methods: {
       toggleDarkTheme() {
-        this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+        this.$vuetify.theme.dark = this.dark_theme
       }
     }
   }
