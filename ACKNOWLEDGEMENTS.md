@@ -1,5 +1,13 @@
-## Acknowledgements
+* Home page image supplied by [vuetifyjs.com](https://cdn.vuetifyjs.com/images/cards/docks.jpg)
 
-* Credit goes to [Josh Zheng](https://github.com/boxcarton) for his informative [blog](https://medium.com/ibm-watson-developer-cloud/build-a-chatbot-that-cares-part-1-d1c273e17a63)
-* Credit goes to [Stef Sharp](https://github.com/sharpstef) for providing an awesome [example](https://github.com/sharpstef/watson-bot-starter)
-* Credit goes to [Sunah Jang](https://github.com/hisunah) for providing Korean translations of [README.md](README_ko.md)
+* To anonymize the names in our dataset we made fake names using popular first names from 1880 paired with animal names for surnames. The first names were taken from https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-level-data under the following terms:
+
+  * Public: This dataset is intended for public access and use.
+  * License: [Creative Commons CCZero](http://opendefinition.org/licenses/cc-zero/)
+
+* The animal names taken from Wikipedia at https://en.wikipedia.org/wiki/List_of_animal_names under the following terms:
+
+  *  Text is available under the [Creative Commons Attribution-ShareAlike License](https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License); additional terms may apply.
+
+
+
