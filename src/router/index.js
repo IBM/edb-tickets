@@ -4,6 +4,7 @@ import AllTickets from '../components/AllTickets.vue'
 import HomePage from '../components/HomePage.vue'
 import TicketForm from '../components/TicketForm.vue'
 import TicketTable from '../components/TicketTable.vue'
+import Analytics from '../components/Analytics.vue'
 
 Vue.use(VueRouter);
 
@@ -32,7 +33,12 @@ const routes = [
     component: AllTickets,
     props: true
   },
-]
+  {
+    path: "/analytics",
+    name: "Analytics",
+    component: Analytics,
+    props: true
+  },]
 
 const router = new VueRouter({
   mode: 'history',
