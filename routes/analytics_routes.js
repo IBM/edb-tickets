@@ -28,7 +28,7 @@ router.get("/getCAcode", function(req, result ) {
     json: true // Automatically stringifies the body to JSON
   };
 
-  // get CA instancee session token
+  // get CA instance session token
   request.post(options, (err, res, body) => {
     if (err) {
       // POST failed...
