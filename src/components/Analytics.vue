@@ -23,14 +23,16 @@
           // create a CA session
           let response = await fetch('http://localhost:8080/analytics/getCAcode/');
           let resp = await response.json();
+          console.log('resp: ' + JSON.stringify(resp, null, 2));
           const caToken = resp['caSessionCode'];
+          const caEndpointURL = resp['caEndpointURL'];
           console.log("CA TOKEN:", caToken);
 
           // create a api instance
           console.log("Create CA API instance");
           const CognosApi = require('../CognosApi');
           const cognosApi = new CognosApi({
-            cognosRootURL: 'https://dde-us-south.analytics.ibm.com/daas/',
+            cognosRootURL: caEndpointURL,
             node: document.getElementById('analyticsDivId'),
             sessionCode: caToken,
             initTimeout: 10000,
@@ -62,7 +64,7 @@
           console.log('dashboardAPI: ' + dashboardAPI);
 
         } catch (error) {
-          console.error('INIT ERROR2: ' + error);
+          console.error('INIT CA ERROR: ' + error);
         }
       },
     }

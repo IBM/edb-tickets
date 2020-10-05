@@ -16,7 +16,7 @@ router.get("/getCAcode", function(req, result ) {
 
   // create a session on Cognos Analytics Embedded Dashboard service
   var options = {
-    url: "https://dde-us-south.analytics.ibm.com/daas/v1/session",
+    url: dde_endpoint_url + "v1/session",
     headers: {
       "Authorization": "Basic " + new Buffer(dde_client_id + ":" + dde_client_secret).toString("base64"),
       "content-type": "application/json",
@@ -40,7 +40,11 @@ router.get("/getCAcode", function(req, result ) {
     console.log('CA Session response: ' + JSON.stringify(body));
     dde_session_code = body["sessionCode"];
     console.log('dde_session_code: ' + dde_session_code);
-    result.send({ caSessionCode: dde_session_code });
+    let results = {
+      "caSessionCode": dde_session_code,
+      "caEndpointURL": dde_endpoint_url
+    };
+    result.send(results);
   });
 });
 
