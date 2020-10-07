@@ -3,6 +3,9 @@ var router = express.Router();
 
 const tickets = require("../controllers/ticket_controller.js");
 
+// Create a new Assignee
+router.post("/assignee", tickets.createAssignee);
+
 // Create a new Ticket
 router.post("/", tickets.create);
 

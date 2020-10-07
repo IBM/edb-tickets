@@ -1,6 +1,5 @@
 <template>
   <div id="all-tickets-table">
-      <!-- <p v-if="this.$store.state.alltickets.length < 1" class="all-tickets-table">No tickets</p> -->
      <v-card>
       <v-card-title>
         All Tickets
@@ -30,6 +29,94 @@
         class="elevation-1">
           <template v-slot:top>
                   <v-spacer></v-spacer>
+              <v-dialog
+                      v-model="dialogEdit"
+                      max-width="500px"
+              >
+                  <v-card>
+                      <v-card-title>
+                          <span class="headline">Edit Item</span>
+                      </v-card-title>
+
+                      <v-card-text>
+                          <v-container>
+                              <v-row>
+                                  <v-col
+                                          cols="12"
+                                          sm="6"
+                                          md="4"
+                                  >
+                                      <v-text-field
+                                              v-model="editedItem.subject"
+                                              label="Subject"
+                                      ></v-text-field>
+                                  </v-col>
+                                  <v-col
+                                          cols="12"
+                                          sm="6"
+                                          md="4"
+                                  >
+                                      <v-text-field
+                                              v-model="editedItem.text"
+                                              label="Details"
+                                      ></v-text-field>
+                                  </v-col>
+                              </v-row>
+                              <v-row>
+                                  <v-col
+                                          cols="12"
+                                          sm="6"
+                                          md="4"
+                                  >
+                                      <v-text-field v-if="editedItem.assignee_id"
+                                              readonly
+                                              v-model="editedItem.assignee_id"
+                                              label="Assigned to"
+                                              hide-details="auto"
+                                      ></v-text-field>
+                                      <v-text-field v-else
+                                                    readonly
+                                                    disabled
+                                                    outlined
+                                                    v-model="editedItem.assignee_id"
+                                                    label="Not Assigned"
+                                                    hide-details="auto"
+                                      ></v-text-field>
+                                  </v-col>
+                                  <v-col
+                                          cols="12"
+                                          sm="6"
+                                          md="4"
+                                  >
+                                      <v-btn
+                                              color="blue darken-1"
+                                              text
+                                              @click="assignMe"
+                                      >Assign Me</v-btn>
+                                  </v-col>
+                              </v-row>
+                          </v-container>
+                      </v-card-text>
+
+                      <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn
+                                  color="blue darken-1"
+                                  text
+                                  @click="cancel"
+                          >
+                              Cancel
+                          </v-btn>
+                          <v-btn
+                                  color="blue darken-1"
+                                  text
+                                  @click="save"
+                          >
+                              Save
+                          </v-btn>
+                      </v-card-actions>
+                  </v-card>
+              </v-dialog>
                   <v-dialog v-model="dialogDelete" max-width="500px">
                       <v-card>
                           <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
@@ -81,8 +168,11 @@
     data() {
       return {
         alltickets: [],
+        dialogEdit: false,
         dialogDelete: false,
         editedIndex: -1,
+        editedItem: {},
+        cachedTicket: {},
         search: '',
         headers: [
           {text: 'Ticket ID', value: 'id', filterable: true, groupable: false},
@@ -132,18 +222,19 @@
         }
       },
       editMode(ticket) {
-        this.cachedTicket = Object.assign({}, ticket)
-        this.editing = ticket.id
+        this.cachedTicket = Object.assign({}, ticket);
       },
       cancelEdit(ticket) {
-        Object.assign(ticket, this.cachedTicket)
-        this.editing = null;
+        Object.assign(ticket, this.cachedTicket);
+        this.alltickets.splice(this.editedIndex, 1, this.cachedTicket);
+        this.dialogEdit = false
       },
 
       editTicket(ticket) {
-        if (ticket.subject === '' || ticket.text === '') return
-        this.$emit('edit:ticket', ticket.id, ticket)
-        this.editing = null
+        this.editMode(ticket);
+        this.editedIndex = this.alltickets.indexOf(ticket);
+        this.editedItem = ticket;
+        this.dialogEdit = true;
       },
 
       async deleteTicket(id) {
@@ -175,7 +266,53 @@
           this.editedIndex = -1
         })
       },
-
+      save () {
+        let ticket = this.alltickets[this.editedIndex];
+        this.updateTicket(ticket);
+        this.dialogEdit = false;
+      },
+      cancel (ticket) {
+        this.cancelEdit(ticket)
+      },
+      open () {
+        console.log("open()");
+      },
+      close () {
+        console.log('Dialog closed')
+        this.dialogEdit = false;
+        console.log("close()");
+      },
+      async assignMe () {
+        let response = await this.addAssignee();
+        const r = await response.json();
+        this.editedItem.assignee_id = r[0].id;
+      },
+      async addAssignee() {
+          return fetch('http://localhost:8080/tickets/assignee', {
+            method: 'POST',
+            body: JSON.stringify({
+              name: this.$store.state.user.username,
+              email: this.$store.state.user.email,
+            }),
+            headers: { "Content-type": "application/json; charset=UTF-8" }
+          });
+      },
+      async updateTicket(updatedTicket) {
+        try {
+          const response = await fetch(`http://localhost:8080/tickets/${updatedTicket.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(updatedTicket),
+            headers: { "Content-type": "application/json; charset=UTF-8" }
+          })
+          const data = await response.json()
+          let ticket = data[0];
+          ticket.user_id = ticket.user_id || ticket.UserId;
+          ticket.assignee_id = ticket.assignee_id || ticket.AssigneeId;
+          this.alltickets.splice(this.editedIndex, 1, ticket);
+        } catch (error) {
+          console.error(error)
+        }
+      },
     }
   }
 </script>

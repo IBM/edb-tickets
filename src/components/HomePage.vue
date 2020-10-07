@@ -4,10 +4,10 @@
 
      <v-parallax
       class="white--text align-end"
-      src="../assets/docks.jpg"
+      src="../assets/elephants.jpg"
       height="200"
     >
-      <v-card-title>Welcome to the EDB Ticketing App</v-card-title>
+      <v-card-title outline class="font-weight-black">Welcome to the EDB Ticketing App</v-card-title>
     </v-parallax>
 
     <v-list-item>
