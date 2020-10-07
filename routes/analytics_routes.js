@@ -8,11 +8,17 @@ const dde_client_secret = process.env.CA_CLIENT_SECRET;
 const dde_endpoint_url = process.env.CA_ENDPOINT_URL;
 
 const dde_web_domain = dde_endpoint_url;
-dde_web_domain.replace('/daas/', '');
+if (dde_web_domain) {
+  dde_web_domain.replace('/daas/', '');
+}
 let dde_session_code = 'undefined';
 
 // retrieve session code
 router.get("/getCAcode", function(req, result ) {
+
+  if (!dde_endpoint_url) {
+    throw new Error('CA_ENDPOINT_URL is not configured');
+  }
 
   // create a session on Cognos Analytics Embedded Dashboard service
   var options = {

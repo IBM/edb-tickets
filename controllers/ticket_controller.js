@@ -62,6 +62,25 @@ exports.findByUser = (req, res) => {
     })
 };
 
+// Create Assignee
+exports.createAssignee = (req, res) => {
+
+  const user = {
+    ...req.body
+  }
+
+  Assignee.upsert(user, { returning: true})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || 'ERROR: Something went wrong. :('
+      })
+    })
+  }
+
 // Retrieve all Tickets assigned to an assignee
 exports.findByAssignee = (req, res) => {
   let email = req.query.email;
@@ -117,7 +136,12 @@ exports.update = (req, res) => {
     // ...req.body  // TODO: map what to keep/toss?
   // };
 
-  Ticket.update({subject: req.body.subject, text: req.body.text}, { where: {id: req.body.id}, returning: true } )
+  // Not sure why I'm getting camel case sometimes.
+  req.body.user_id = req.body.user_id || req.body.UserId;
+  req.body.assignee_id = req.body.assignee_id || req.body.AssigneeId;
+
+  // Ticket.update({subject: req.body.subject, text: req.body.text}, { where: {id: req.body.id}, returning: true } )
+  Ticket.update(req.body, { where: {id: req.body.id}, returning: true } )
     .then(data => {
       console.log("RESULT:", data);
       res.send(data[1]);

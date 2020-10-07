@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   Assignee.init({
     name: DataTypes.STRING,
-    email: DataTypes.STRING
+    email: {type: DataTypes.STRING, unique: true, allowNull: false}
   }, {
     sequelize,
     modelName: 'Assignee',

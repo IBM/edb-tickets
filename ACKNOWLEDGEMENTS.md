@@ -9,5 +9,7 @@
 
   *  Text is available under the [Creative Commons Attribution-ShareAlike License](https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License); additional terms may apply.
 
+* elephants.jpg is from https://search.creativecommons.org/photos/ec07589c-4f7e-4f14-82e5-75875c1329ea.
 
+  * Attribution: "African Elephants - Herd" by LaertesCTB is licensed under CC BY 2.0
 
