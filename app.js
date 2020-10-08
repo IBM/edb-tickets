@@ -5,8 +5,8 @@ var models = require('./models/index.js');
 const sequelize = new Sequelize(configs['development']);
 
 (async () => {
-  await models.sequelize.sync({ force: true });  // Clobber for testing
-  // await models.sequelize.sync({ alter: true });
+  // await models.sequelize.sync({ force: true });  // Clobber for testing
+  await models.sequelize.sync({ alter: true });
 })();
 
 (async () => {
