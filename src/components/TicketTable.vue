@@ -26,12 +26,15 @@
         show-group-by
         multi-sort
         class="elevation-1">
-         <template v-slot:item.priority="{ item }">
-           <v-chip x-small :color="getColor(item.priority)" dark>{{ priorities[item.priority] || 'None' }}</v-chip>
-         </template>
-         <template v-slot:item.createdAt="{ item }">
-            {{ new Date(item.createdAt).toLocaleString() }}
-         </template>
+          <template v-slot:item.priority="{ item }">
+            <v-chip x-small :color="getColor(item.priority)" dark>{{ priorities[item.priority] || 'None' }}</v-chip>
+          </template>
+          <template v-slot:item.category="{ item }">
+            {{ categories[item.category] }}
+          </template>
+          <template v-slot:item.createdAt="{ item }">
+              {{ new Date(item.createdAt).toLocaleString() }}
+          </template>
       </v-data-table>
     </v-card>
 
@@ -60,6 +63,12 @@
           'Medium',
           'Low',
           'None',
+        ],
+        categories: [
+          'Equipment',
+          'Service Access',
+          'Facilities',
+          'Other',
         ],
         prioritiesColors: [
           'purple',

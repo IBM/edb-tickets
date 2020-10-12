@@ -31,5 +31,5 @@ insert into tickets (subject, text, state, category, priority, created_at, updat
   on conflict do nothing
 ;
 
--- TODO: Drop the temporary table when done (make it really temporary).
--- DROP TABLE public.loading_tickets
+-- Drop the temporary table when done
+DROP TABLE public.loading_tickets
