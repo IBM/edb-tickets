@@ -1,0 +1,411 @@
+{
+  "name": "New dashboard",
+  "layout": {
+    "id": "model00000175090b2a2e_00000002",
+    "items": [
+      {
+        "id": "model00000175090b2a2f_00000000",
+        "items": [
+          {
+            "id": "model00000175090b2a2f_00000001",
+            "css": "templateBox aspectRatio_default",
+            "items": [
+              {
+                "id": "model00000175090b2a2f_00000002",
+                "style": {
+                  "top": "0%",
+                  "left": "0%",
+                  "right": "0%",
+                  "bottom": "0%"
+                },
+                "type": "templateIndicator"
+              },
+              {
+                "id": "model000001750957c450_00000000",
+                "style": {
+                  "left": "2.0156046814044215%",
+                  "top": "12.48374512353706%",
+                  "height": "56.96425372056062%",
+                  "width": "93.95318595578674%"
+                },
+                "type": "widget",
+                "relatedLayouts": "",
+                "content": {}
+              }
+            ],
+            "type": "genericPage",
+            "layoutPositioning": "relative"
+          }
+        ],
+        "type": "container",
+        "title": {
+          "translationTable": {
+            "Default": "Tab 1"
+          }
+        },
+        "templateName": "Template1"
+      }
+    ],
+    "style": {
+      "height": "100%"
+    },
+    "type": "tab",
+    "showGrid": true,
+    "snapGrid": true,
+    "snapObjects": true,
+    "pageSize": {
+      "width": 1280,
+      "height": 720
+    },
+    "layoutPositioning": "relative"
+  },
+  "theme": "defaultTheme",
+  "version": 1601,
+  "eventGroups": [
+    {
+      "id": "model00000175090b2a2f_00000000:1",
+      "widgetIds": [
+        "model000001750957c450_00000000"
+      ]
+    }
+  ],
+  "properties": {
+    "customColors": {
+      "colors": []
+    },
+    "defaultLocale": "Default",
+    "fredIsRed": true
+  },
+  "drillThrough": [],
+  "fredIsRed": {
+    "id": "model00000175090b2a2e_00000000",
+    "colorMap": {},
+    "saveId": 2
+  },
+  "pageContext": [],
+  "dataSources": {
+    "version": "1.0",
+    "sources": [
+      {
+        "id": "model00000175094c1784_00000002",
+        "assetId": "assetId00000175094c1784_00000000",
+        "clientId": "621e12f5-33fe-423c-bb91-c522a6e04de4:30320efc-57ec-48d2-b845-c5eec38a97a9:/public/users:table:users",
+        "module": {
+          "xsd": "https://ibm.com/daas/module/1.0/module.xsd",
+          "source": {
+            "id": "621e12f5-33fe-423c-bb91-c522a6e04de4:30320efc-57ec-48d2-b845-c5eec38a97a9:/public/users:table:users",
+            "user": "admin",
+            "password": "edbpassword",
+            "jdbc": {
+              "jdbcUrl": "jdbc:postgres://4fc33b01-ed12-45d6-aa63-0d2a83dcc93b.bn2a2uid0up8mv7mv2ig.databases.appdomain.cloud:32465/ibmclouddb",
+              "driverClassName": "org.postgresql.Driver",
+              "schema": "users"
+            }
+          },
+          "label": "users",
+          "identifier": "users",
+          "table": {
+            "column": [
+              {
+                "datatype": "integer",
+                "nullable": false,
+                "name": "id",
+                "label": "id",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "varchar(255)",
+                "nullable": true,
+                "name": "name",
+                "label": "name",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "varchar(255)",
+                "nullable": false,
+                "name": "email",
+                "label": "email",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "timestamp",
+                "nullable": false,
+                "name": "created_at",
+                "label": "created_at",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "timestamp",
+                "nullable": false,
+                "name": "updated_at",
+                "label": "updated_at",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cDate"
+              }
+            ],
+            "name": "users",
+            "label": "users",
+            "description": ""
+          }
+        },
+        "name": "users",
+        "shaping": {
+          "embeddedModuleUpToDate": true
+        }
+      },
+      {
+        "id": "model00000175094c6852_00000001",
+        "assetId": "assetId00000175094c6850_00000000",
+        "clientId": "621e12f5-33fe-423c-bb91-c522a6e04de4:30320efc-57ec-48d2-b845-c5eec38a97a9:/public/assignees:table:assignees",
+        "module": {
+          "xsd": "https://ibm.com/daas/module/1.0/module.xsd",
+          "source": {
+            "id": "621e12f5-33fe-423c-bb91-c522a6e04de4:30320efc-57ec-48d2-b845-c5eec38a97a9:/public/assignees:table:assignees",
+            "user": "admin",
+            "password": "edbpassword",
+            "jdbc": {
+              "jdbcUrl": "jdbc:postgres://4fc33b01-ed12-45d6-aa63-0d2a83dcc93b.bn2a2uid0up8mv7mv2ig.databases.appdomain.cloud:32465/ibmclouddb",
+              "driverClassName": "org.postgresql.Driver",
+              "schema": "assignees"
+            }
+          },
+          "label": "assignees",
+          "identifier": "assignees",
+          "table": {
+            "column": [
+              {
+                "datatype": "integer",
+                "nullable": false,
+                "name": "id",
+                "label": "id",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "varchar(255)",
+                "nullable": true,
+                "name": "name",
+                "label": "name",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "varchar(255)",
+                "nullable": false,
+                "name": "email",
+                "label": "email",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "timestamp",
+                "nullable": false,
+                "name": "created_at",
+                "label": "created_at",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "timestamp",
+                "nullable": false,
+                "name": "updated_at",
+                "label": "updated_at",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cDate"
+              }
+            ],
+            "name": "assignees",
+            "label": "assignees",
+            "description": ""
+          }
+        },
+        "name": "assignees",
+        "shaping": {
+          "embeddedModuleUpToDate": true
+        }
+      },
+      {
+        "id": "model00000175094d92da_00000002",
+        "assetId": "assetId00000175094d92da_00000000",
+        "clientId": "621e12f5-33fe-423c-bb91-c522a6e04de4:30320efc-57ec-48d2-b845-c5eec38a97a9:/public/tickets:table:tickets",
+        "module": {
+          "xsd": "https://ibm.com/daas/module/1.0/module.xsd",
+          "source": {
+            "id": "621e12f5-33fe-423c-bb91-c522a6e04de4:30320efc-57ec-48d2-b845-c5eec38a97a9:/public/tickets:table:tickets",
+            "user": "admin",
+            "password": "edbpassword",
+            "jdbc": {
+              "jdbcUrl": "jdbc:postgres://4fc33b01-ed12-45d6-aa63-0d2a83dcc93b.bn2a2uid0up8mv7mv2ig.databases.appdomain.cloud:32465/ibmclouddb",
+              "driverClassName": "org.postgresql.Driver",
+              "schema": "tickets"
+            }
+          },
+          "label": "tickets",
+          "identifier": "tickets",
+          "table": {
+            "column": [
+              {
+                "datatype": "integer",
+                "nullable": false,
+                "name": "id",
+                "label": "id",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "varchar(255)",
+                "nullable": false,
+                "name": "subject",
+                "label": "subject",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "varchar(255)",
+                "nullable": false,
+                "name": "text",
+                "label": "text",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "varchar(255)",
+                "nullable": true,
+                "name": "state",
+                "label": "state",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cStateProvince"
+              },
+              {
+                "datatype": "varchar(255)",
+                "nullable": true,
+                "name": "category",
+                "label": "category",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "integer",
+                "nullable": true,
+                "name": "priority",
+                "label": "priority",
+                "usage": "fact",
+                "regularAggregate": "total",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "timestamp",
+                "nullable": false,
+                "name": "created_at",
+                "label": "created_at",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "timestamp",
+                "nullable": false,
+                "name": "updated_at",
+                "label": "updated_at",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cDate"
+              },
+              {
+                "datatype": "integer",
+                "nullable": true,
+                "name": "assignee_id",
+                "label": "assignee_id",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              },
+              {
+                "datatype": "integer",
+                "nullable": true,
+                "name": "user_id",
+                "label": "user_id",
+                "usage": "attribute",
+                "regularAggregate": "countDistinct",
+                "taxonomyFamily": "cNone"
+              }
+            ],
+            "name": "tickets",
+            "label": "tickets",
+            "description": ""
+          }
+        },
+        "name": "tickets",
+        "shaping": {
+          "embeddedModuleUpToDate": true
+        }
+      }
+    ]
+  },
+  "widgets": {
+    "model000001750957c450_00000000": {
+      "type": "live",
+      "id": "model000001750957c450_00000000",
+      "visId": "JQGrid",
+      "name": {
+        "translationTable": {}
+      },
+      "data": {
+        "dataViews": [
+          {
+            "modelRef": "model00000175094d92da_00000002",
+            "dataItems": [
+              {
+                "id": "id2090403202",
+                "itemId": "tickets.id",
+                "itemLabel": "id",
+                "navigationPathId": null
+              },
+              {
+                "id": "id347047205",
+                "itemId": "tickets.subject",
+                "itemLabel": "subject",
+                "navigationPathId": null
+              }
+            ],
+            "id": "model000001750958a68c_00000000"
+          }
+        ]
+      },
+      "visTypeLocked": true,
+      "slotmapping": {
+        "slots": [
+          {
+            "name": "grid_cols",
+            "dataItems": [
+              "id2090403202",
+              "id347047205"
+            ],
+            "layerId": "data"
+          }
+        ]
+      },
+      "properties": [],
+      "localFilters": []
+    }
+  }
+}

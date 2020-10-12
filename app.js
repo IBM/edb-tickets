@@ -5,7 +5,7 @@ var models = require('./models/index.js');
 const sequelize = new Sequelize(configs['development']);
 
 (async () => {
-  // await models.sequelize.sync({ force: true });  // Clobber for testing
+  //await models.sequelize.sync({ force: true });  // Clobber for testing
   await models.sequelize.sync({ alter: true });
 })();
 
@@ -22,6 +22,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
 const ticketRoutes = require("./routes/ticket_routes");
+const analyticsRoutes = require("./routes/analytics_routes");
 
 const express = require("express");
 const app = express();
@@ -54,6 +55,7 @@ app.use(express.static('dist'));
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 app.use('/tickets', ticketRoutes);
+app.use('/analytics', analyticsRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
