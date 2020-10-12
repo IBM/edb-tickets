@@ -41,7 +41,6 @@ cd edb-tickets
 
 <img src="doc/source/images/edb.svg" alt="logo" width="10" height="10"> [Databases for EDB](https://cloud.ibm.com/catalog/services/databases-for-enterprisedb)  
 <img src="doc/source/images/DDE_50.svg" alt="logo" width="10" height="10"> [
-IBM Cognos Dashboard Embedded](https://cloud.ibm.com/catalog/services/ibm-cognos-dashboard-embedded)
 
 ### Configure EDB
 
