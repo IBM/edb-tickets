@@ -86,7 +86,7 @@
               email: this.email,
               subject: this.subject,
               text: this.text,
-              category: this.category,
+              category: this.categories.indexOf(this.category),
               priority: this.priorities.indexOf(this.priority),
             }),
             headers: { "Content-type": "application/json; charset=UTF-8" }
