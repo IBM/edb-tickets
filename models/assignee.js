@@ -11,12 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.myAssociation = this.belongsTo(models.User);
       this.myAssociation = this.hasMany(models.Ticket);
     }
-  };
+  }
   Assignee.init({
-    name: DataTypes.STRING,
-    email: {type: DataTypes.STRING, unique: true, allowNull: false}
+    id: {type: DataTypes.STRING, primaryKey: true, allowNull: false},
+    dept: DataTypes.STRING,
+    manager: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Assignee',

@@ -1,0 +1,21 @@
+id,user_id,subject,text,priority,state,assignee_id,created_at,updated_at,category
+1,98001,Laptop overheating,laptop starts getting very hot a couple minutes after starting,1,closed,98002,2020-03-25 11:50:00+00,2020-03-25 11:50:00+00,0
+2,98002,Broken hard drive,drive is not detected by OS,0,closed,98003,2020-03-26 01:20:00+00,2020-03-26 01:20:00+00,0
+3,98003,Mouse cord is broken,where can I get a new mouse?,2,closed,98002,2020-03-24 16:58:00+00,2020-03-24 16:58:00+00,0
+4,98004,Keyboad has stuck keys,Letter H is broken,1,closed,98001,2020-03-24 02:29:00+00,2020-03-24 02:29:00+00,0
+5,98005,Need bigger monitor,Is it possible to order larger monitor?,3,closed,98001,2020-03-25 15:32:00+00,2020-03-25 15:32:00+00,0
+6,98006,Broken laptop,labtop is not turning on,0,closed,98003,2020-03-25 10:49:00+00,2020-03-25 10:49:00+00,0
+7,98007,Docking station not connected,USB ports not enabled on my docking station,3,closed,98004,2020-04-01 06:36:00+00,2020-04-01 06:36:00+00,0
+8,98008,Unable to find class files,What are the proper credentials for the class directory?,1,closed,98004,2020-03-23 09:54:00+00,2020-03-23 09:54:00+00,1
+9,98009,Cannot open file for past 3 days,Need access,1,closed,98002,2020-03-24 03:36:00+00,2020-03-24 03:36:00+00,1
+10,98010,Cannot find a notebook when I clicked open tool,Do I have access?,1,closed,98003,2020-03-22 20:06:00+00,2020-03-22 20:06:00+00,1
+11,98011,Wrong wi-fi password,given password not working for me,1,closed,98001,2020-03-22 19:10:00+00,2020-03-22 19:10:00+00,1
+12,98012,Notebook just spins,unable to launch Jupyter notebook,2,closed,98003,2020-03-21 05:12:00+00,2020-03-21 05:12:00+00,1
+13,98013,Test results admin access,My user credentials should be allowed access,3,closed,98004,2020-03-23 08:38:00+00,2020-03-23 08:38:00+00,1
+14,98014,Cannot open the Lab,Have I been added to the student list?,0,closed,98001,2020-03-19 18:00:00+00,2020-03-19 18:00:00+00,1
+15,98015,Coursera IBM AI Engineering labs not available,Is my link wrong?,1,closed,98002,2020-03-19 09:24:00+00,2020-03-19 09:24:00+00,1
+16,98016,Can't open my locker,door is jammed,2,closed,98005,2020-03-20 11:47:00+00,2020-03-20 11:47:00+00,2
+17,98017,Parking are is too dark,can we add some lighting?,2,closed,98001,2020-03-16 22:09:00+00,2020-03-16 22:09:00+00,2
+18,98018,weekend class room access,what are the official hours?,3,closed,98001,2020-03-17 11:51:00+00,2020-03-17 11:51:00+00,2
+19,98019,bathroom keys,where are they located?,3,closed,98005,2020-03-17 04:21:00+00,2020-03-17 04:21:00+00,2
+20,98020,A/C is broken,Bld 12 is out,2,closed,98005,2020-03-16 00:02:00+00,2020-03-16 00:02:00+00,2

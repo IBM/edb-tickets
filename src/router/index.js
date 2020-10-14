@@ -4,6 +4,7 @@ import AllTickets from '../components/AllTickets.vue'
 import HomePage from '../components/HomePage.vue'
 import TicketForm from '../components/TicketForm.vue'
 import TicketTable from '../components/TicketTable.vue'
+import Assignees from '../components/Assignees.vue'
 
 Vue.use(VueRouter);
 
@@ -30,6 +31,12 @@ const routes = [
     path: "/alltickets",
     name: "AllTickets",
     component: AllTickets,
+    props: true
+  },
+  {
+    path: "/assignees",
+    name: "Assignees",
+    component: Assignees,
     props: true
   }
 ]

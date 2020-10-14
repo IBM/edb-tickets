@@ -13,8 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.myAssociation = this.hasMany(models.Ticket);
     }
-  };
+  }
   User.init({
+    id: {type: DataTypes.STRING, primaryKey: true, allowNull: false},
     name: DataTypes.STRING,
     email: {type: DataTypes.STRING, unique: true, allowNull: false}
   }, {
