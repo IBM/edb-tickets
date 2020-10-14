@@ -14,13 +14,13 @@ module.exports = (sequelize, DataTypes) => {
       this.myAssociation = this.belongsTo(models.User, {foreignKey: { name: 'user_id', allowNull: false}});
       this.myAssociation2 = this.belongsTo(models.Assignee, {foreignKey: { name: 'assignee_id', allowNull: true}});
     }
-  };
+  }
   Ticket.init({
     subject: {type: DataTypes.STRING, allowNull: false},
     text: {type: DataTypes.STRING, allowNull: false},
     state: {type: DataTypes.STRING, defaultValue: 'open'},
     category: {type: DataTypes.STRING, defaultValue: 'Other'},
-    priority: {type: DataTypes.INTEGER, defaultValue: 4}
+    priority: {type: DataTypes.INTEGER, defaultValue: 4},
   }, {
     sequelize,
     modelName: 'Ticket',

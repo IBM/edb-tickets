@@ -1,11 +1,10 @@
-
 const { Sequelize } = require("sequelize");
 var configs = require('./config/config.js');
 var models = require('./models/index.js');
 const sequelize = new Sequelize(configs['development']);
 
 (async () => {
-  // await models.sequelize.sync({ force: true });  // Clobber for testing
+  //await models.sequelize.sync({ force: true });  // Clobber for testing
   await models.sequelize.sync({ alter: true });
 })();
 
@@ -20,8 +19,9 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-// var usersRouter = require('./routes/users');
-const ticketRoutes = require("./routes/ticket_routes");
+var userRoutes = require('./routes/user_routes');
+var assigneeRoutes = require('./routes/assignee_routes');
+const ticketRoutes = require('./routes/ticket_routes');
 
 const express = require("express");
 const app = express();
@@ -52,7 +52,8 @@ app.use(logger('dev'));
 app.use(express.static('dist'));
 
 app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+app.use('/users', userRoutes);
+app.use('/assignees', assigneeRoutes);
 app.use('/tickets', ticketRoutes);
 
 // catch 404 and forward to error handler

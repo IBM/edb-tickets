@@ -22,9 +22,6 @@
         :search="search"
         show-expand
         dense
-        group-by="state"
-        group-desc
-        show-group-by
         multi-sort>
         class="elevation-1">
           <template v-slot:top>
@@ -132,6 +129,14 @@
               </v-dialog>
           </template>
 
+          <template v-slot:item.user_id="{ item }">
+            {{ getUserName(item.user_id) }}
+          </template>
+
+          <template v-slot:item.assignee_id="{ item }">
+            {{ getUserName(item.assignee_id) }}
+          </template>
+
           <template v-slot:item.priority="{ item }">
             <v-chip x-small :color="getColor(item.priority)" dark>{{ priorities[item.priority] || 'None' }}</v-chip>
           </template>
@@ -173,6 +178,8 @@
     data() {
       return {
         alltickets: [],
+        allusers: [],
+        userName: '',
         dialogEdit: false,
         dialogDelete: false,
         editedIndex: -1,
@@ -181,7 +188,7 @@
         search: '',
         headers: [
           {text: 'Ticket ID', value: 'id', filterable: true, groupable: false},
-          {text: 'User ID', value: 'user_id', filterable: true, groupable: false},
+          {text: 'Created by', value: 'user_id', filterable: true, groupable: false},
           {text: 'Assigned to', value: 'assignee_id', filterable: true, groupable: false},
           {text: 'Subject', value: 'subject', filterable: true, groupable: false},
           {text: 'Category', value: 'category', filterable: true},
@@ -214,6 +221,7 @@
     },
     mounted() {
       this.getTickets()
+      this.getUsers()
     },
     methods: {
       getColor(priority) {
@@ -231,6 +239,27 @@
         } catch (error) {
           console.error(error)
         }
+      },
+      async getUsers() {
+        try {
+          console.log("ALLUSERS ROUTE PATH: " + this.$route.path);
+          const response = await fetch('http://localhost:8080/users/');
+          console.log("RESPONSE:", response)
+          const resp = await response.json()
+          console.log("DATA:", resp)
+          this.allusers = resp
+        } catch (error) {
+          console.error(error)
+        }
+      },
+      getUserName(id) {
+        let name = "undefined";
+        this.allusers.forEach((user) => {
+          if (user.id === id) {
+            name = user.name;
+          }
+        });
+        return name;
       },
       editMode(ticket) {
         this.cachedTicket = Object.assign({}, ticket);
