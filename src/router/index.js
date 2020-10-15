@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import AllTickets from '../components/AllTickets.vue'
-import HomePage from '../components/HomePage.vue'
-import TicketForm from '../components/TicketForm.vue'
-import TicketTable from '../components/TicketTable.vue'
-import Assignees from '../components/Assignees.vue'
+import AllTickets from '../pages/AllTicketsPage.vue'
+import HomePage from '../pages/HomePage.vue'
+import AddTicket from '../pages/AddTicketPage.vue'
+import TicketTable from '../pages/TicketTable.vue'
+import Assignees from '../pages/SupportStaffPage.vue'
 
 Vue.use(VueRouter);
 
@@ -17,8 +17,8 @@ const routes = [
   },
   {
     path: "/addticket",
-    name: "TicketForm",
-    component: TicketForm,
+    name: "AddTicket",
+    component: AddTicket,
     props: true
   },
   {
