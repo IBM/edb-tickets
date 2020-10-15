@@ -12,173 +12,201 @@
           hide-details
         ></v-text-field>
       </v-card-title>
-
-      <v-data-table
-        :headers="headers"
-        :items="this.alltickets"
-        item-key="id"
-        :sort-by="['createdAt']"
-        :sort-desc="[true]"
-        :search="search"
-        show-expand
-        dense
-        multi-sort>
-        class="elevation-1">
-          <template v-slot:top>
-            <v-spacer></v-spacer>
-              <v-dialog
-                v-model="dialogEdit"
-                max-width="500px"
-              >
-                <v-card>
-                  <v-card-title>
-                    <span class="headline">Edit Item</span>
-                  </v-card-title>
-
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col
-                          cols="12"
-                          sm="6"
-                          md="4"
-                        >
-                          <v-text-field
-                            v-model="editedItem.subject"
-                            label="Subject"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col
-                          cols="12"
-                          sm="6"
-                          md="4"
-                        >
-                          <v-text-field
-                            v-model="editedItem.text"
-                            label="Details"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-
-                      <v-row>
-                        <v-col
-                          cols="12"
-                          sm="6"
-                          md="4"
-                        >
-                          <v-text-field v-if="editedItem.assignee_id"
-                            readonly
-                            v-model="editedItem.assignee_id"
-                            label="Assigned to"
-                            hide-details="auto"
-                          ></v-text-field>
-                          <v-text-field v-else
-                            readonly
-                            disabled
-                            outlined
-                            v-model="editedItem.assignee_id"
-                            label="Not Assigned"
-                            hide-details="auto"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col
-                          cols="12"
-                          sm="6"
-                          md="4"
-                        >
-                          <v-btn
-                            color="blue darken-1"
-                            text
-                            @click="assignMe"
-                          >Assign Me</v-btn>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card-text>
-
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      color="blue darken-1"
-                      text
-                      @click="cancel"
-                    >
-                      Cancel
-                    </v-btn>
-                    <v-btn
-                      color="blue darken-1"
-                      text
-                      @click="save"
-                    >
-                      Save
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-              
-              <v-dialog v-model="dialogDelete" max-width="500px">
-                <v-card>
-                  <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                    <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                    <v-spacer></v-spacer>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-          </template>
-
-          <template v-slot:item.user_id="{ item }">
-            {{ getUserName(item.user_id) }}
-          </template>
-
-          <template v-slot:item.assignee_id="{ item }">
-            {{ getUserName(item.assignee_id) }}
-          </template>
-
-          <template v-slot:item.priority="{ item }">
-            <v-chip x-small :color="getColor(item.priority)" dark>{{ priorities[item.priority] || 'None' }}</v-chip>
-          </template>
-          <template v-slot:item.category="{ item }">
-            {{ categories[item.category] }}
-          </template>
-          <template v-slot:item.createdAt="{ item }">
-            {{ new Date(item.createdAt).toLocaleDateString() }}
-          </template>
-          <template v-slot:expanded-item="{ headers, item }">
-            <td :colspan="headers.length">
-              {{ item.text }}
-            </td>
-          </template>
-          <template v-slot:item.actions="{ item }">
-            <v-icon
-              small
-              @click="editTicket(item)"
-            >
-            mdi-pencil
-            </v-icon>
-            <v-icon
-              small
-              @click="deleteItem(item)"
-            >
-              mdi-delete
-            </v-icon>
-        </template>
-      </v-data-table>
     </v-card>
 
+    <v-tabs
+      left
+    >
+      <v-tab>Open</v-tab>
+      <v-tab>Closed</v-tab>
+
+      <v-tab-item>
+        <v-card>
+          <v-data-table
+            :headers="headers"
+            :items="this.allOpenTickets"
+            item-key="id"
+            :sort-by="['createdAt']"
+            :sort-desc="[true]"
+            :search="search"
+            show-expand
+            dense
+            multi-sort>
+            class="elevation-1">
+              <template v-slot:top>
+                <v-spacer></v-spacer>
+
+                <v-dialog
+                    v-model="dialogEdit"
+                    max-width="600px"
+                >
+                  <edit-ticket
+                    :editTicket="editedItem"
+                    :allUsers="allUsers"
+                    :allAssignees="allAssignees"
+                    v-on:cancel="cancel"
+                    v-on:save="save"
+                  >
+                  </edit-ticket>
+                </v-dialog>
+
+                <v-dialog v-model="dialogDelete" max-width="500px">
+                  <v-card>
+                    <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                      <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </template>
+
+              <template v-slot:item.user_id="{ item }">
+                {{ getUserName(item.user_id) }}
+              </template>
+
+              <template v-slot:item.assignee_id="{ item }">
+                {{ getUserName(item.assignee_id) }}
+              </template>
+
+              <template v-slot:item.priority="{ item }">
+                <v-chip x-small :color="getColor(item.priority)" dark>{{ priorities[item.priority] || 'None' }}</v-chip>
+              </template>
+              <template v-slot:item.category="{ item }">
+                {{ categories[item.category] }}
+              </template>
+              <template v-slot:item.createdAt="{ item }">
+                {{ new Date(item.createdAt).toLocaleDateString() }}
+              </template>
+              <template v-slot:expanded-item="{ headers, item }">
+                <td :colspan="headers.length">
+                  {{ item.text }}
+                </td>
+              </template>
+              <template v-slot:item.actions="{ item }">
+                <v-icon
+                  small
+                  @click="editTicket(item)"
+                >
+                mdi-pencil
+                </v-icon>
+                <v-icon
+                  small
+                  @click="deleteItem(item)"
+                >
+                  mdi-delete
+                </v-icon>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item>
+        <v-card>
+          <v-data-table
+            :headers="headers"
+            :items="this.allClosedTickets"
+            item-key="id"
+            :sort-by="['createdAt']"
+            :sort-desc="[true]"
+            :search="search"
+            show-expand
+            dense
+            multi-sort>
+            class="elevation-1">
+              <template v-slot:top>
+                <v-spacer></v-spacer>
+
+                <v-dialog
+                    v-model="dialogEdit"
+                    max-width="600px"
+                >
+                  <edit-ticket
+                    :editTicket="editedItem"
+                    :allUsers="allUsers"
+                    :allAssignees="allAssignees"
+                    v-on:cancel="cancel"
+                    v-on:save="save"
+                  >
+                  </edit-ticket>
+                
+                </v-dialog>
+
+                <v-dialog v-model="dialogDelete" max-width="500px">
+                    <v-card>
+                      <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                        <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                        <v-spacer></v-spacer>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+              </template>
+
+              <template v-slot:item.user_id="{ item }">
+                {{ getUserName(item.user_id) }}
+              </template>
+
+              <template v-slot:item.assignee_id="{ item }">
+                {{ getUserName(item.assignee_id) }}
+              </template>
+
+              <template v-slot:item.priority="{ item }">
+                <v-chip x-small :color="getColor(item.priority)" dark>{{ priorities[item.priority] || 'None' }}</v-chip>
+              </template>
+              <template v-slot:item.category="{ item }">
+                {{ categories[item.category] }}
+              </template>
+              <template v-slot:item.createdAt="{ item }">
+                {{ new Date(item.createdAt).toLocaleDateString() }}
+              </template>
+              <template v-slot:expanded-item="{ headers, item }">
+                <td :colspan="headers.length">
+                  {{ item.text }}
+                </td>
+              </template>
+              <template v-slot:item.actions="{ item }">
+                <v-icon
+                  small
+                  @click="editTicket(item)"
+                >
+                mdi-pencil
+                </v-icon>
+                <v-icon
+                  small
+                  @click="deleteItem(item)"
+                >
+                  mdi-delete
+                </v-icon>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-tab-item>
+
+    </v-tabs>
   </div>
 </template>
 
 <script>
-
+  import EditTicketComponent from './EditTicket.vue'
   export default {
     name: 'all-tickets-table',
+    components: {
+      'editTicket': EditTicketComponent
+    },
     data() {
       return {
+        tab: null,
+        tabItems: [ 'Open', 'Closed'],
         alltickets: [],
-        allusers: [],
+        allOpenTickets: [],
+        allClosedTickets: [],
+        allUsers: [],
+        allAssignees: [],
         userName: '',
         dialogEdit: false,
         dialogDelete: false,
@@ -222,6 +250,7 @@
     mounted() {
       this.getTickets()
       this.getUsers()
+      this.getAssignees()
     },
     methods: {
       getColor(priority) {
@@ -236,6 +265,13 @@
           const resp = await response.json()
           console.log("DATA:", resp)
           this.alltickets = resp
+          this.alltickets.forEach((ticket) => {
+            if (ticket.state === 'closed') {
+              this.allClosedTickets.push(ticket);
+            } else {
+              this.allOpenTickets.push(ticket);
+            }
+          });
         } catch (error) {
           console.error(error)
         }
@@ -247,14 +283,26 @@
           console.log("RESPONSE:", response)
           const resp = await response.json()
           console.log("DATA:", resp)
-          this.allusers = resp
+          this.allUsers = resp
+        } catch (error) {
+          console.error(error)
+        }
+      },
+      async getAssignees() {
+        try {
+          console.log("ALLASSIGNEES ROUTE PATH: " + this.$route.path);
+          const response = await fetch('http://localhost:8080/assignees/');
+          console.log("RESPONSE:", response)
+          const resp = await response.json()
+          console.log("DATA:", resp)
+          this.allAssignees = resp
         } catch (error) {
           console.error(error)
         }
       },
       getUserName(id) {
         let name = "undefined";
-        this.allusers.forEach((user) => {
+        this.allUsers.forEach((user) => {
           if (user.id === id) {
             name = user.name;
           }
@@ -306,9 +354,14 @@
           this.editedIndex = -1
         })
       },
-      save () {
+      saveold () {
         let ticket = this.alltickets[this.editedIndex];
         this.updateTicket(ticket);
+        this.dialogEdit = false;
+      },
+      save: function(updatedTicket) {
+        console.log('Updated ticket: ' + JSON.stringify(updatedTicket, null, 2));
+        this.updateTicket(updatedTicket);
         this.dialogEdit = false;
       },
       cancel (ticket) {
