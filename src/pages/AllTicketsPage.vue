@@ -20,14 +20,14 @@
     >
       <v-tab>
         <v-icon left>
-          mdi-decagram-outline
+          mdi-alert-decagram-outline
         </v-icon>
         Open
       </v-tab>
       
       <v-tab>
         <v-icon left>
-          mdi-decagram
+          mdi-check-decagram
         </v-icon>
         Closed
       </v-tab>
@@ -52,6 +52,7 @@
                   :key="componentKey"
                   v-model="dialogEdit"
                   max-width="600px"
+                  persistent
                 >
                   <edit-ticket
                     :editTicket="editedItem"
@@ -135,6 +136,7 @@
                   :key="componentKey"
                   v-model="dialogEdit"
                   max-width="600px"
+                  persistent
                 >
                   <edit-ticket
                     :editTicket="editedItem"

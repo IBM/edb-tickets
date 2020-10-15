@@ -1,4 +1,20 @@
-<template>
+/**
+ * Copyright 2020 IBM Corp. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the 'License'); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+ <template>
   <div id="app">
     <v-app>
       <v-app-bar
@@ -59,10 +75,9 @@
                 </v-row>
                 <v-row dense>
                   <v-col>
-                      <v-checkbox
-                              v-model="hasAssigneeRole"
-                              label="Sign in as a ticket assignee"
-                      ></v-checkbox>
+                    <div style="margin-top: 40px; margin-bottom: 40px; font-weight: 800">
+                      NOTE: Sign-in is required to create new tickets. Data will be saved to the EDB Cloud service, so you may not want to use your real name and email address.
+                    </div>
                   </v-col>
                 </v-row>
               </v-container>
@@ -213,20 +228,17 @@
           ...this.$store.state.user,
           username: this.userName,
           email: this.userEmail,
-          hasAssigneeRole: this.hasAssigneeRole,
         };
         this.dialog = false
       },
       async resetUser() {
         this.userName = this.$store.state.user.username,
         this.userEmail = this.$store.state.user.email,
-        this.hasAssigneeRole = this.$store.state.user.hasAssigneeRole,
         this.dialog = false
       },
     }
   }
 </script>
 
-<style>
+<style scoped>
 </style>
-
