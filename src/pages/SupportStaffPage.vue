@@ -20,8 +20,7 @@
         :sort-by="['id']"
         :sort-desc="[true]"
         :search="search"
-        dense
-        multi-sort>
+        dense>
         class="elevation-1">
           <template v-slot:item.id="{ item }">
             {{ getUserName(item.id) }}
@@ -95,4 +94,7 @@
 </script>
 
 <style scoped>
+  .v-data-table{
+    margin-top: 50px;
+  }
 </style>

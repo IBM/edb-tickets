@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   User.init({
-    id: {type: DataTypes.STRING, primaryKey: true, allowNull: false},
+    // id: {type: DataTypes.STRING, primaryKey: true, allowNull: false},
+    id: {type: DataTypes.STRING, primaryKey: true, allowNull: false, defaultValue: ('98' + Math.floor(Math.random() * (999 - 100) + 100))},
     name: DataTypes.STRING,
     email: {type: DataTypes.STRING, unique: true, allowNull: false}
   }, {
