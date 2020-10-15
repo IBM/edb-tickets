@@ -15,13 +15,26 @@
     </v-card>
 
     <v-tabs
+      color="deep-orange darken-3"
       left
     >
-      <v-tab>Open</v-tab>
-      <v-tab>Closed</v-tab>
+      <v-tab>
+        <v-icon left>
+          mdi-decagram-outline
+        </v-icon>
+        Open
+      </v-tab>
+      
+      <v-tab>
+        <v-icon left>
+          mdi-decagram
+        </v-icon>
+        Closed
+      </v-tab>
 
       <v-tab-item>
         <v-card>
+
           <v-data-table
             :headers="headers"
             :items="this.allOpenTickets"
@@ -30,22 +43,22 @@
             :sort-desc="[true]"
             :search="search"
             show-expand
-            dense
-            multi-sort>
+            dense>
             class="elevation-1">
               <template v-slot:top>
                 <v-spacer></v-spacer>
 
                 <v-dialog
-                    v-model="dialogEdit"
-                    max-width="600px"
+                  :key="componentKey"
+                  v-model="dialogEdit"
+                  max-width="600px"
                 >
                   <edit-ticket
                     :editTicket="editedItem"
                     :allUsers="allUsers"
                     :allAssignees="allAssignees"
                     v-on:cancel="cancel"
-                    v-on:save="save"
+                    v-on:save="saveOpened"
                   >
                   </edit-ticket>
                 </v-dialog>
@@ -113,38 +126,38 @@
             :sort-desc="[true]"
             :search="search"
             show-expand
-            dense
-            multi-sort>
+            dense>
             class="elevation-1">
               <template v-slot:top>
                 <v-spacer></v-spacer>
 
-                <v-dialog
-                    v-model="dialogEdit"
-                    max-width="600px"
+                <v-dialog 
+                  :key="componentKey"
+                  v-model="dialogEdit"
+                  max-width="600px"
                 >
                   <edit-ticket
                     :editTicket="editedItem"
                     :allUsers="allUsers"
                     :allAssignees="allAssignees"
                     v-on:cancel="cancel"
-                    v-on:save="save"
+                    v-on:save="saveClosed"
                   >
                   </edit-ticket>
                 
                 </v-dialog>
 
                 <v-dialog v-model="dialogDelete" max-width="500px">
-                    <v-card>
-                      <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                        <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                        <v-spacer></v-spacer>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
+                  <v-card>
+                    <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                      <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
               </template>
 
               <template v-slot:item.user_id="{ item }">
@@ -192,7 +205,7 @@
 </template>
 
 <script>
-  import EditTicketComponent from './EditTicket.vue'
+  import EditTicketComponent from '../components/ticket/EditDialog.vue'
   export default {
     name: 'all-tickets-table',
     components: {
@@ -213,15 +226,15 @@
         editedIndex: -1,
         editedItem: {},
         cachedTicket: {},
+        componentKey: 0,
         search: '',
         headers: [
           {text: 'Ticket ID', value: 'id', filterable: true, groupable: false},
           {text: 'Created by', value: 'user_id', filterable: true, groupable: false},
           {text: 'Assigned to', value: 'assignee_id', filterable: true, groupable: false},
           {text: 'Subject', value: 'subject', filterable: true, groupable: false},
-          {text: 'Category', value: 'category', filterable: true},
-          {text: 'Priority', value: 'priority', filterable: true},
-          {text: 'Status', value: 'state', filterable: true},
+          {text: 'Category', value: 'category', filterable: true, groupable: false},
+          {text: 'Priority', value: 'priority', filterable: true, groupable: false},
           {text: 'Created', value: 'createdAt', filterable: true, groupable: false},
           {text: 'Actions', value: 'actions', filterable: false, groupable: false},
         ],
@@ -255,7 +268,9 @@
     methods: {
       getColor(priority) {
         return this.prioritiesColors[priority] || 'white'
-
+      },
+      forceRerender() {
+        this.componentKey += 1;
       },
       async getTickets() {
         try {
@@ -315,7 +330,8 @@
       cancelEdit(ticket) {
         Object.assign(ticket, this.cachedTicket);
         this.alltickets.splice(this.editedIndex, 1, this.cachedTicket);
-        this.dialogEdit = false
+        this.dialogEdit = false;
+        this.forceRerender()
       },
 
       editTicket(ticket) {
@@ -346,22 +362,37 @@
         let ticket = this.alltickets[this.editedIndex];
         this.deleteTicket(ticket.id);
         this.alltickets.splice(this.editedIndex, 1);
-        this.closeDelete()
+        this.closeDelete();
       },
       closeDelete () {
         this.dialogDelete = false
         this.$nextTick(() => {
-          this.editedIndex = -1
+          this.editedIndex = -1;
         })
       },
-      saveold () {
-        let ticket = this.alltickets[this.editedIndex];
-        this.updateTicket(ticket);
-        this.dialogEdit = false;
-      },
-      save: function(updatedTicket) {
+      saveOpened: function(updatedTicket) {
         console.log('Updated ticket: ' + JSON.stringify(updatedTicket, null, 2));
         this.updateTicket(updatedTicket);
+        if (updatedTicket.state === 'closed') {
+          // ticket went from 'open' to 'closed'
+          let tempOpenTickets = this.allOpenTickets.filter(ticket => ticket.id !== updatedTicket.id);
+          this.allOpenTickets = tempOpenTickets;
+          this.allClosedTickets.push(updatedTicket);
+          console.log('Swiched ticket from open to closed');
+        }
+        this.dialogEdit = false;
+      },
+      saveClosed: function(updatedTicket) {
+        console.log('Updated ticket: ' + JSON.stringify(updatedTicket, null, 2));
+        this.updateTicket(updatedTicket);
+        this.dialogEdit = false;
+        if (updatedTicket.state === 'open') {
+          // ticket went from 'closed' to 'open'
+          let tempClosedTickets = this.allClosedTickets.filter(ticket => ticket.id !== updatedTicket.id);
+          this.allClosedTickets = tempClosedTickets;
+          this.allOpenTickets.push(updatedTicket);
+          console.log('Swiched ticket from closed to open');
+        }
         this.dialogEdit = false;
       },
       cancel (ticket) {
