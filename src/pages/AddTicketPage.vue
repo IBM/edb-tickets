@@ -69,8 +69,6 @@
           'None',
         ],
 
-        // allUsers: [],
-        // userId: 'undefined'
       }
     },
     computed: {
