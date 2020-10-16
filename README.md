@@ -2,23 +2,23 @@
 
 [![Build Status](https://travis-ci.org/IBM/edb-tickets.svg?branch=main)](https://travis-ci.org/IBM/edb-tickets)
 
-# Develop a fully featured web app built on EDB, an enterprise ready PostgresSQL database
+# Develop a fully featured web app built on EDB, an enterprise ready PostgreSQL database
 
 In this code pattern, we walk you through a working example of a web application that tracks a companies internal support ticket system. The app will allow users to create, assign, manage, and close support tickets.
 
 All support tickets, users, and support staff will be maintained in a Databases for EDB deployment provisioned on IBM Cloud. Other featured technologies include:
 
-* [Sequialize](https://sequelize.org/): A Node.js Object-Relational Mapper (ORM) for Postgres, MySQL, and other relational databases.
+* [Sequelize](https://sequelize.org/): A Node.js Object-Relational Mapper (ORM) for Postgres, MySQL, and other relational databases.
 * [Node.js](https://nodejs.org): An open-source JavaScript run-time environment for executing server-side JavaScript code.
 * [Express](https://expressjs.com/): A popular and minimalistic web framework for creating an API and Web server.
 * [Vue](https://vuejs.org/): A JavaScript framework for building Web app user interfaces.
 * [Vuetify](https://vuetifyjs.com): A Material Design component framework for Vue.js apps.
-* [psql](): A command line interface utility for managing PostgresSQL databases.
+* [psql](): A command line interface utility for managing PostgrSQL databases.
 
 When you have completed this code pattern, you will understand how to:
 
 * Provision an `EDB for Databases` instance on IBM Cloud.
-* Use `Sequilize` to programmatically map out the objects in our relational database.
+* Use `Sequelize` to programmatically map out the objects in our relational database.
 * Build a fully functional web app built on Node.js, with an `Express` server with REST APIs, and a `Vue` based UI.
 * Use `psql` scripts to seed the database tables with tickets, users, and support staff.
 
