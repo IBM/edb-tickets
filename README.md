@@ -259,7 +259,7 @@ Files found in the `/routes` directory set up the REST endpoints for accessing t
 
 `Vue` components are used to build the app UI, and can be found in the `/src` directory.
 
-The main `Vue` component is `App.uve`, which defines the page banner, the login panel, and navigation links to the sub-pages.
+The main `Vue` component is `App.vue`, which defines the page banner, the login panel, and navigation links to the sub-pages.
 
 Each sub-panel in the app has its own `Vue` file, which is located in the `/src/pages` directory.
 
