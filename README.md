@@ -6,7 +6,9 @@
 
 In this code pattern, we walk you through a working example of a web application that tracks a companies internal support ticket system. The app will allow users to create, assign, manage, and close support tickets.
 
-All support tickets, users, and support staff will be maintained in a Databases for EDB deployment provisioned on IBM Cloud. Other featured technologies include:
+All support tickets, users, and support staff will be maintained in a `Databases for EDB` deployment provisioned on IBM Cloud. `EDB` is a PostgreSQL-based database that provides features such as: high availability, automated backup orchestration, and de-coupled scaling of storage, RAM, and vCPUs.
+
+Other featured technologies in this code pattern include:
 
 * [Sequelize](https://sequelize.org/): A Node.js Object-Relational Mapper (ORM) for Postgres, MySQL, and other relational databases.
 * [Node.js](https://nodejs.org): An open-source JavaScript run-time environment for executing server-side JavaScript code.
@@ -26,11 +28,9 @@ When you have completed this code pattern, you will understand how to:
 
 ## Flow
 
-1. Step 1.
-2. Step 2.
-3. Step 3.
-4. Step 4.
-5. Step 5.
+1. Use `psql` to seed `EDB` tables with user, assignee, and ticket data.
+1. User interacts with the `Node.js` app to create and maintain ticket information. The `Vue` based client UI accesses EDB data via the `Express` server REST APIs.
+1. The app server uses `Sequelize` to perform CRUD operations on the EDB instance.
 
 ## Steps
 
@@ -40,6 +40,7 @@ When you have completed this code pattern, you will understand how to:
 1. [Load some historical data](#4-load-some-historical-data)
 1. [Run the application](#5-run-the-application)
 1. [Use the app](#6-use-the-app)
+1. [Application structure](#-7-application-structure)
 
 ## 1. Clone the repo
 
@@ -228,7 +229,7 @@ The `All Tickets` menu option displays all tickets in the database. Tabs are use
 
 The `Support Staff` menu option displays all users who are designated as support staff. This are the only users who can be assigned a ticket.
 
-The `New Ticket` menu option displays a form you can use to create a ticket. Here you are required to enter a `Subject` and `Description`, and select a `Category` and `Priority`.
+The `New Ticket` menu option displays a form you can use to create a ticket. Here you are required to enter a `Subject` and `Description`, and select a `Category` and `Priority`. The new ticket will automatically assign you as the `created by` user.
 
 To assign a support staff member to work on the ticket, `Edit` the ticket by clicking the `pencil` icon shown in the `Actions` column for the ticket in the `All Tickets` panel.
 
@@ -237,6 +238,32 @@ To assign a support staff member to work on the ticket, `Edit` the ticket by cli
 From the `Edit Ticket` panel you can also change the current status, and other ticket details.
 
 To delete a ticket, click the `trashcan` icon shown in the `Actions` column for the ticket in the `All Tickets` panel.
+
+## 7. Application structure
+
+### Database support
+
+Each of the database tables in `EDB` will be descibed by their respective files found in the `/models` directory. The files specify the field names and any relationships that exist between tables.
+
+Files located in the `/controllers` directory define what access the server has to the database tables, and how to perform that access.
+
+NOTE: in `/controllers/ticket.js`, you will see the `Sequelize` command `Upsert` used when a ticket is added. This insures that the `created by` user exists in the user table. If they do not, the user is added at that same time as the ticket. This ensures data integrity.
+
+### Express routing
+
+The `Express` framework is used to deine route paths in the server. 
+
+Files found in the `/routes` directory set up the REST endpoints for accessing the data in each of the `EDB` tables.
+
+### Vue components
+
+`Vue` components are used to build the app UI, and can be found in the `/src` directory.
+
+The main `Vue` component is `App.uve`, which defines the page banner, the login panel, and navigation links to the sub-pages.
+
+Each sub-panel in the app has its own `Vue` file, which is located in the `/src/pages` directory.
+
+Re-usable sub-components can be found in the `/src/compenents` directory.
 
 ## License
 
