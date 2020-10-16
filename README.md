@@ -2,18 +2,25 @@
 
 [![Build Status](https://travis-ci.org/IBM/edb-tickets.svg?branch=main)](https://travis-ci.org/IBM/edb-tickets)
 
-# EDB Tickets
+# Develop a fully featured web app built on EDB, an enterprise ready PostgresSQL database
 
-A support ticket system built on EDB -- enterprise ready PostgreSQL.
+In this code pattern, we walk you through a working example of a web application that tracks a companies internal support ticket system. The app will allow users to create, assign, manage, and close support tickets.
 
-In this code pattern, we will [create something] using [technologies] and [components]. [Explain briefly how things work]. [Give acknowledgements to others if necessary]
+All support tickets, users, and support staff will be maintained in a Databases for EDB deployment provisioned on IBM Cloud. Other featured technologies include:
+
+* [Sequialize](https://sequelize.org/): A Node.js Object-Relational Mapper (ORM) for Postgres, MySQL, and other relational databases.
+* [Node.js](https://nodejs.org): An open-source JavaScript run-time environment for executing server-side JavaScript code.
+* [Express](https://expressjs.com/): A popular and minimalistic web framework for creating an API and Web server.
+* [Vue](https://vuejs.org/): A JavaScript framework for building Web app user interfaces.
+* [Vuetify](https://vuetifyjs.com): A Material Design component framework for Vue.js apps.
+* [psql](): A command line interface utility for managing PostgresSQL databases.
 
 When you have completed this code pattern, you will understand how to:
 
-* [goal 1]
-* [goal 2]
-* [goal 3]
-* [goal 4]
+* Provision an `EDB for Databases` instance on IBM Cloud.
+* Use `Sequilize` to programmatically map out the objects in our relational database.
+* Build a fully functional web app built on Node.js, with an `Express` server with REST APIs, and a `Vue` based UI.
+* Use `psql` scripts to seed the database tables with tickets, users, and support staff.
 
 ![architecture](doc/source/images/architecture.png)
 
@@ -27,7 +34,14 @@ When you have completed this code pattern, you will understand how to:
 
 ## Steps
 
-### Clone the repo
+1. [Clone the repo](#1-clone-the-repo)
+1. [Provision the Databases for EDB service](#2-provision-the-databases-for-edb-service)
+1. [Add service credentials to environment file](#3-add-service-credentials-to-environment-file)
+1. [Load some historical data](#4-load-some-historical-data)
+1. [Run the application](#5-run-the-application)
+1. [Use the app](#6-use-the-app)
+
+## 1. Clone the repo
 
 Clone the **edb-tickets** repo locally. In a terminal, run:
 
@@ -35,29 +49,25 @@ Clone the **edb-tickets** repo locally. In a terminal, run:
 git clone https://github.com/IBM/edb-tickets
 cd edb-tickets
 ```
+
 > Note: Example commands below will assume you ran the `cd edb-tickets` command to start from the base directory of your cloned repo.
 
-### Provision the cloud services
+## 2. Provision the Databases for EDB service
 
-<img src="doc/source/images/edb.svg" alt="logo" width="10" height="10"> [Databases for EDB](https://cloud.ibm.com/catalog/services/databases-for-enterprisedb)  
-<img src="doc/source/images/DDE_50.svg" alt="logo" width="10" height="10"> [
+* If you do not have an IBM Cloud account, register for a free trial account [here](https://cloud.ibm.com/registration)
+* Create a `Databases for EDB` instance from the [IBM Cloud catalog](https://cloud.ibm.com/catalog/services/databases-for-enterprisedb)
+  * Verify the default region, and modify the instance name if you like.
+  * Keep all other default options and values.
 
-### Configure EDB
+## 3. Add service credentials to environment file
 
-* Create a DB (see below)
-* Gather credentials and download cert to a file.
-* Copy the [**env.sample**](env.sample) to **.env**.
-* Put the creds and access info in .env
-
-Example command to copy the [**env.sample**](env.sample) to **.env**:
+Copy the local `env.sample` file and name it `.env`:
 
 ```bash
 cp env.sample .env
 ```
 
-Edit the `.env` file with the necessary settings.
-
-#### `env.sample:`
+You will need to Update the `.env` file with the credentials from your EDB service. Here is an example `.env` file showing the credentials you will need to collect:
 
 ```bash
 # Copy this file to .env and replace the credentials with
@@ -71,59 +81,162 @@ DB_PORT=32465
 DB_CERTFILE=/users/username/edb-cert
 ```
 
-### Run the application
+To find your `DB_HOST` and `DB_PORT` values, navigate to your EDB service panel and click the `Overview` tab.
 
-1. Install [Node.js](https://nodejs.org/en/) runtime.
+![edb-overview](doc/source/images/edb-overview.png)
+
+Copy and paste the `Certificate` into a local file, and provide the name as the `DB_CERTFILE` value.
+
+For `DB_USERNAME`, we recommend using the `admin` account. To set the `DB_PASSWORD` for the `admin` account, use the `Update Password` option located in the `Settings` tab.
+
+![edb-admin-password](doc/source/images/edb-admin-password.png)
+
+For the `DB_DATABASE` value, keep the default name `edb-tickets`.
+
+## 4. Load sample data
+
+You can create, edit, assign, and close your own tickets using the app, 
+
+If you would like to start with some sample data, we have created a `psql` script to seed the database with users, support staff, and tickets. Instructions can be found the [README](data/README.md) file located in the `/data` directory.
+
+### Load tickets into the database from CSV files using `psql`
+
+#### Prerequisites
+
+You should follow the main [../README.md](../README.md) to setup and start the app. When the app starts it will connect to the database and create the tables. The instructions below assume the tables have already been created using this method.
+
+> TODO: Should we provide scripts for this also? It might be interesting.
+
+### Install psql
+
+The command-line tool `psql` is what we use to run our data loading script.
+
+#### Install it
+
+https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-connecting-psql
+
+#### On MacOS:
+
+```bash
+brew install libpq
+brew link --force libpq
+```
+
+> NOTE: This broke my npm/node.  I had to brew update npm afterwards.
+
+### Load the sample data
+
+The UI and database are ready if you followed the above steps.  You can start entering new tickets. For some additional sample data, we have provided some old data that you can load into the database to have some history to show:
+
+Export the same connection info that you put in .env as a convenience for the command that follows.
+
+```bash
+# . ./.env # TODO: this does not work. need exports like this...
+export DB_DATABASE=edb-tickets
+export DB_USERNAME=admin
+export DB_HOST=AAAAAAAA-1234-5678-aaaa-945735783957983574574574308753457.databases.appdomain.cloud
+export DB_PORT=32465
+```
+
+<!-- 
+### Create the database (can we move this to the main README?)
+
+> Note:  If you haven't created the database yet (then you didn't follow the instructions) you can just connect to the `postgres` database and run `CREATE DATABASE testdb1; quit;`.  Here is a script to do it.
+```bash
+psql -h $DB_HOST -p $DB_PORT -U $DB_USERNAME postgres -v dbname=$DB_DATABASE -f data/createdb.sql
+```
+> Tip: The output says `CREATE DATABASE` when it is successful.
+-->
+
+From your local repo's **edb-tickets** directory, use **psql** to run the script in [data/load.sql](load.sql) using your connection credentials.
+
+```bash
+psql -h $DB_HOST -p $DB_PORT -U $DB_USERNAME $DB_DATABASE -f data/load.sql
+```
+
+### TODO: Show what it does... yada yada
+
+### psql tips
+
+For an interactive session in the psql query tool, run the command without an input file (no -f).
+
+```bash
+psql -h $DB_HOST -p $DB_PORT -U $DB_USERNAME $DB_DATABASE
+```
+
+* PSQL TIP: You can store your password somewhere to avoid prompting.
+
+* PSQL TIP: end SQL with a semi-colon for it to run in psql
+
+* PSQL TIP: Use `exit` or `quit` to end your session.
+
+## 5. Run the application
+
+1. Install the [Node.js](https://nodejs.org/en/) runtime.
 1. Build and start the app by running the following commands:
+
    ```bash
    npm install
    npm run build
    npm start
    ```
-1. Use the app at [http://localhost:8080](http://localhost:8080).
 
-When the app starts it will connect to the database and create the tables.
+1. The application will be available in your broswer at [http://localhost:8080](http://localhost:8080).
 
-> NOTE: The following code snippet in **app.js** determines whether the tables will be dropped and re-created, or altered and migrated:
+![app-home-page](doc/source/images/app-home-page.png)
 
-#### app.js
+When the app starts it will connect and sync to the database. If needed, you can modify the code to drop the database tables and start fresh. The code is located in **app.js** file.
 
 ```javascript
 (async () => {
   // Clobber and recreate the tables for testing
-  await models.sequelize.sync({ force: true });
+  //await models.sequelize.sync({ force: true });
+
   // Don't clobber the tables, but alter and migrate if needed
-  // await models.sequelize.sync({ alter: true });
+  await models.sequelize.sync({ alter: true });
 })();
 ```
 
-> TODO: Perhaps we should make that configurable instead of commented code? (but still show those interesting 2 lines).
-
 ### For UI Developers
 
-1. Run the above to start the server with the REST API and a build of the UI.
-1. Run the below to start a development server so you can work on the UI and see your changes.
-1. The development server will take the next available port so it should be accessible at http://localhost:8081.
-1. Keep in mind that when using this dev app, it will still rely no the REST services provided by the server running on port 8080.
+1. Run the command shown above to start the server with the REST API and a build of the UI.
+1. Run the command below to start a `development server` so you can work on the UI and see your changes.
+1. The `development server` will take the next available port so it should be accessible at http://localhost:8081.
+1. Keep in mind that when using this development app, it will still rely on the REST services provided by the server running on port `8080`.
 
 ```bash
 npm run serve
 ```
 
-### Load some historical data
+## 6. Use the app
 
-You can create, edit, assign, and close your own tickets using the app.
+The app is a typically help desk application that tracks tickets for service requests. Users create the ticket, the ticket is assigned to a member of the support staff, and the ticket can be updated with current status as it progresses to being completed and closed.
 
-We have prepared some example data to give us something to show for analytics (and in the app). If you want to load this additional data into your database, the instructions and data are [here](data/README.md):
+Anyone who logs into the app is considered a valid user, and will be added to the database as such. Any valid user can add or modify tickets, but only support staff personnel can be assigned to work on a ticket.
 
-* [Load tickets into the database from a CSV file using `psql`](data/README.md)
+To start, you will need to login to the app by clicking the avatar located in the top right corner of the home page. Since this data will be stored in the EDB cloud service, we suggest using an alias for username and email.
 
+Once logged in, you will now have access to all of the menu options.
 
-### Use the app
+> **NOTE**: You will not be able to create a ticket until you log in.
 
-* TODO: Describe how to use it, what to look for...
+![app-menu-options](doc/source/images/app-menu-options.png)
 
-![sample_output](doc/source/images/sample_output.png)
+The `All Tickets` menu option displays all tickets in the database. Tabs are used to seperate out `Open` and `Closed` tickets.
+
+![app-all-tickets](doc/source/images/app-all-tickets.png)
+
+The `Support Staff` menu option displays all users who are designated as support staff. This are the only users who can be assigned a ticket.
+
+The `New Ticket` menu option displays a form you can use to create a ticket. Here you are required to enter a `Subject` and `Description`, and select a `Category` and `Priority`.
+
+To assign a support staff member to work on the ticket, `Edit` the ticket by clicking the `pencil` icon shown in the `Actions` column for the ticket in the `All Tickets` panel.
+
+![app-edit-ticket](doc/source/images/app-edit-ticket.png)
+
+From the `Edit Ticket` panel you can also change the current status, and other ticket details.
+
+To delete a ticket, click the `trashcan` icon shown in the `Actions` column for the ticket in the `All Tickets` panel.
 
 ## License
 

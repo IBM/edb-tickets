@@ -207,7 +207,7 @@
       ],
       items: [
         { title:"New Ticket", href:"/addticket", icon:"mdi-note-plus-outline" },
-        { title:"My Tickets", href:"/mytickets", icon:"mdi-ticket-account" },
+        // { title:"My Tickets", href:"/mytickets", icon:"mdi-ticket-account" },
       ],
       dialog: false,
     }),
