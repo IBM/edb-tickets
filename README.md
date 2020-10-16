@@ -247,11 +247,15 @@ Each of the database tables in `EDB` will be descibed by their respective files 
 
 Files located in the `/controllers` directory define what access the server has to the database tables, and how to perform that access.
 
-NOTE: in `/controllers/ticket.js`, you will see the `Sequelize` command `Upsert` used when a ticket is added. This insures that the `created by` user exists in the user table. If they do not, the user is added at that same time as the ticket. This ensures data integrity.
+Here is an entity-relationship diagram of the tables in our `EDB` database. A ticket is linked to a user (who created the ticket) by `user_id`, and to an assignee by `assignee_id`. An assignee is linked to a user by `user_id`.
+
+![db-schema](doc/source/images/db-schema.png)
+
+NOTE: in `/controllers/ticket.js`, you will see the `Sequelize` command `Upsert` used when a ticket is added. This insures that the `created by` user exists in the user table. If they do not, the user is added at the same time as the ticket. This ensures data integrity.
 
 ### Express routing
 
-The `Express` framework is used to deine route paths in the server. 
+The `Express` framework is used to deine route paths in the server.
 
 Files found in the `/routes` directory set up the REST endpoints for accessing the data in each of the `EDB` tables.
 
