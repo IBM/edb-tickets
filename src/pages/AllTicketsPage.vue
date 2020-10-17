@@ -24,7 +24,7 @@
         </v-icon>
         Open
       </v-tab>
-      
+
       <v-tab>
         <v-icon left>
           mdi-check-decagram
@@ -132,7 +132,7 @@
               <template v-slot:top>
                 <v-spacer></v-spacer>
 
-                <v-dialog 
+                <v-dialog
                   :key="componentKey"
                   v-model="dialogEdit"
                   max-width="600px"
@@ -146,7 +146,7 @@
                     v-on:save="saveClosed"
                   >
                   </edit-ticket>
-                
+
                 </v-dialog>
 
                 <v-dialog v-model="dialogDelete" max-width="500px">
@@ -277,7 +277,7 @@
       async getTickets() {
         try {
           console.log("ALLTICKETS ROUTE PATH: " + this.$route.path);
-          const response = await fetch('http://localhost:8080/tickets/');
+          const response = await fetch('/api/v1/tickets/');
           console.log("RESPONSE:", response)
           const resp = await response.json()
           console.log("DATA:", resp)
@@ -296,7 +296,7 @@
       async getUsers() {
         try {
           console.log("ALLUSERS ROUTE PATH: " + this.$route.path);
-          const response = await fetch('http://localhost:8080/users/');
+          const response = await fetch('/api/v1/users/');
           console.log("RESPONSE:", response)
           const resp = await response.json()
           console.log("DATA:", resp)
@@ -308,7 +308,7 @@
       async getAssignees() {
         try {
           console.log("ALLASSIGNEES ROUTE PATH: " + this.$route.path);
-          const response = await fetch('http://localhost:8080/assignees/');
+          const response = await fetch('/api/v1/assignees/');
           console.log("RESPONSE:", response)
           const resp = await response.json()
           console.log("DATA:", resp)
@@ -346,7 +346,7 @@
       async deleteTicket(id) {
         try {
           console.log("deleteTicket...");
-          const response = await fetch(`http://localhost:8080/tickets/${id}`, {
+          const response = await fetch(`/api/v1/tickets/${id}`, {
             method: 'DELETE'
           })
           console.log("RESPONSE:", response)
@@ -414,7 +414,7 @@
         this.editedItem.assignee_id = r[0].id;
       },
       async addAssignee() {
-          return fetch('http://localhost:8080/tickets/assignee', {
+          return fetch('/api/v1/tickets/assignee', {
             method: 'POST',
             body: JSON.stringify({
               name: this.$store.state.user.username,
@@ -425,7 +425,7 @@
       },
       async updateTicket(updatedTicket) {
         try {
-          const response = await fetch(`http://localhost:8080/tickets/${updatedTicket.id}`, {
+          const response = await fetch(`/api/v1/tickets/${updatedTicket.id}`, {
             method: 'PUT',
             body: JSON.stringify(updatedTicket),
             headers: { "Content-type": "application/json; charset=UTF-8" }

@@ -59,7 +59,7 @@
       async getAssignees() {
         try {
           console.log("ALLASSIGNEES ROUTE PATH: " + this.$route.path);
-          const response = await fetch('http://localhost:8080/assignees/');
+          const response = await fetch('/api/v1/assignees/');
           console.log("RESPONSE:", response)
           const resp = await response.json()
           console.log("DATA:", resp)
@@ -71,7 +71,7 @@
       async getUsers() {
         try {
           console.log("ALLUSERS ROUTE PATH: " + this.$route.path);
-          const response = await fetch('http://localhost:8080/users/');
+          const response = await fetch('/api/v1/users/');
           console.log("RESPONSE:", response)
           const resp = await response.json()
           console.log("DATA:", resp)

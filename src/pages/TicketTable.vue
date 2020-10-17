@@ -91,7 +91,7 @@
         try {
           console.log("ROUTE PATH: " + this.$route.path);
           const userOrAssignee = this.$store.state.user.hasAssigneeRole ? 'assignee' : 'user';
-          const response = await fetch('http://localhost:8080/tickets/' + userOrAssignee + '?email=' + encodeURIComponent(this.$store.state.user.email));
+          const response = await fetch('/api/v1/tickets/' + userOrAssignee + '?email=' + encodeURIComponent(this.$store.state.user.email));
           console.log("RESPONSE:", response)
           const resp = await response.json()
           console.log("DATA:", resp)

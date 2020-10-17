@@ -14,11 +14,9 @@ const sequelize = new Sequelize(configs['development']);
 })();
 
 var httpErrors = require('http-errors');
-var path = require('path');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
 var userRoutes = require('./routes/user_routes');
 var assigneeRoutes = require('./routes/assignee_routes');
 const ticketRoutes = require('./routes/ticket_routes');
@@ -30,11 +28,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 const cors = require("cors");
-var corsOptions = {
-  origin: "http://localhost:8081"
-};
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 
 
@@ -42,19 +37,15 @@ app.use(cors(corsOptions));
 //////
 //////
 //////
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 
-app.use(express.static('dist'));
+// Serve a static version of the client at /
+app.use(express.static('dist', {fallthrough: true}));
 
-app.use('/', indexRouter);
-app.use('/users', userRoutes);
-app.use('/assignees', assigneeRoutes);
-app.use('/tickets', ticketRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/assignees', assigneeRoutes);
+app.use('/api/v1/tickets', ticketRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

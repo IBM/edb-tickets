@@ -79,7 +79,7 @@
     methods: {
       async addTicket() {
         try {
-          const response = await fetch('http://localhost:8080/tickets', {
+          const response = await fetch('/api/v1/tickets', {
             method: 'POST',
             body: JSON.stringify({
               name: this.$store.state.user.username,
