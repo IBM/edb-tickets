@@ -37,7 +37,7 @@
 
           <v-data-table
             :headers="headers"
-            :items="this.allOpenTickets"
+            :items="this.alltickets.filter((i) => { return i.state !== 'closed'; })"
             item-key="id"
             :sort-by="['createdAt']"
             :sort-desc="[true]"
@@ -59,7 +59,7 @@
                     :allUsers="allUsers"
                     :allAssignees="allAssignees"
                     v-on:cancel="cancel"
-                    v-on:save="saveOpened"
+                    v-on:save="save"
                   >
                   </edit-ticket>
                 </v-dialog>
@@ -121,7 +121,7 @@
         <v-card>
           <v-data-table
             :headers="headers"
-            :items="this.allClosedTickets"
+            :items="this.alltickets.filter((i) => { return i.state === 'closed'; })"
             item-key="id"
             :sort-by="['createdAt']"
             :sort-desc="[true]"
@@ -143,7 +143,7 @@
                     :allUsers="allUsers"
                     :allAssignees="allAssignees"
                     v-on:cancel="cancel"
-                    v-on:save="saveClosed"
+                    v-on:save="save"
                   >
                   </edit-ticket>
 
@@ -218,8 +218,6 @@
         tab: null,
         tabItems: [ 'Open', 'Closed'],
         alltickets: [],
-        allOpenTickets: [],
-        allClosedTickets: [],
         allUsers: [],
         allAssignees: [],
         userName: '',
@@ -282,13 +280,6 @@
           const resp = await response.json()
           console.log("DATA:", resp)
           this.alltickets = resp
-          this.alltickets.forEach((ticket) => {
-            if (ticket.state === 'closed') {
-              this.allClosedTickets.push(ticket);
-            } else {
-              this.allOpenTickets.push(ticket);
-            }
-          });
         } catch (error) {
           console.error(error)
         }
@@ -333,7 +324,7 @@
         Object.assign(ticket, this.cachedTicket);
         this.alltickets.splice(this.editedIndex, 1, this.cachedTicket);
         this.dialogEdit = false;
-        this.forceRerender()
+        // this.forceRerender()
       },
 
       editTicket(ticket) {
@@ -372,29 +363,9 @@
           this.editedIndex = -1;
         })
       },
-      saveOpened: function(updatedTicket) {
+      save: function(updatedTicket) {
         console.log('Updated ticket: ' + JSON.stringify(updatedTicket, null, 2));
         this.updateTicket(updatedTicket);
-        if (updatedTicket.state === 'closed') {
-          // ticket went from 'open' to 'closed'
-          let tempOpenTickets = this.allOpenTickets.filter(ticket => ticket.id !== updatedTicket.id);
-          this.allOpenTickets = tempOpenTickets;
-          this.allClosedTickets.push(updatedTicket);
-          console.log('Swiched ticket from open to closed');
-        }
-        this.dialogEdit = false;
-      },
-      saveClosed: function(updatedTicket) {
-        console.log('Updated ticket: ' + JSON.stringify(updatedTicket, null, 2));
-        this.updateTicket(updatedTicket);
-        this.dialogEdit = false;
-        if (updatedTicket.state === 'open') {
-          // ticket went from 'closed' to 'open'
-          let tempClosedTickets = this.allClosedTickets.filter(ticket => ticket.id !== updatedTicket.id);
-          this.allClosedTickets = tempClosedTickets;
-          this.allOpenTickets.push(updatedTicket);
-          console.log('Swiched ticket from closed to open');
-        }
         this.dialogEdit = false;
       },
       cancel (ticket) {
