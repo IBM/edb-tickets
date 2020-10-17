@@ -24,7 +24,7 @@
         </v-icon>
         Open
       </v-tab>
-      
+
       <v-tab>
         <v-icon left>
           mdi-check-decagram
@@ -37,7 +37,7 @@
 
           <v-data-table
             :headers="headers"
-            :items="this.allOpenTickets"
+            :items="this.alltickets.filter((i) => { return i.state !== 'closed'; })"
             item-key="id"
             :sort-by="['createdAt']"
             :sort-desc="[true]"
@@ -59,7 +59,7 @@
                     :allUsers="allUsers"
                     :allAssignees="allAssignees"
                     v-on:cancel="cancel"
-                    v-on:save="saveOpened"
+                    v-on:save="save"
                   >
                   </edit-ticket>
                 </v-dialog>
@@ -121,7 +121,7 @@
         <v-card>
           <v-data-table
             :headers="headers"
-            :items="this.allClosedTickets"
+            :items="this.alltickets.filter((i) => { return i.state === 'closed'; })"
             item-key="id"
             :sort-by="['createdAt']"
             :sort-desc="[true]"
@@ -132,7 +132,7 @@
               <template v-slot:top>
                 <v-spacer></v-spacer>
 
-                <v-dialog 
+                <v-dialog
                   :key="componentKey"
                   v-model="dialogEdit"
                   max-width="600px"
@@ -143,10 +143,10 @@
                     :allUsers="allUsers"
                     :allAssignees="allAssignees"
                     v-on:cancel="cancel"
-                    v-on:save="saveClosed"
+                    v-on:save="save"
                   >
                   </edit-ticket>
-                
+
                 </v-dialog>
 
                 <v-dialog v-model="dialogDelete" max-width="500px">
@@ -218,8 +218,6 @@
         tab: null,
         tabItems: [ 'Open', 'Closed'],
         alltickets: [],
-        allOpenTickets: [],
-        allClosedTickets: [],
         allUsers: [],
         allAssignees: [],
         userName: '',
@@ -277,18 +275,11 @@
       async getTickets() {
         try {
           console.log("ALLTICKETS ROUTE PATH: " + this.$route.path);
-          const response = await fetch('http://localhost:8080/tickets/');
+          const response = await fetch('/api/v1/tickets/');
           console.log("RESPONSE:", response)
           const resp = await response.json()
           console.log("DATA:", resp)
           this.alltickets = resp
-          this.alltickets.forEach((ticket) => {
-            if (ticket.state === 'closed') {
-              this.allClosedTickets.push(ticket);
-            } else {
-              this.allOpenTickets.push(ticket);
-            }
-          });
         } catch (error) {
           console.error(error)
         }
@@ -296,7 +287,7 @@
       async getUsers() {
         try {
           console.log("ALLUSERS ROUTE PATH: " + this.$route.path);
-          const response = await fetch('http://localhost:8080/users/');
+          const response = await fetch('/api/v1/users/');
           console.log("RESPONSE:", response)
           const resp = await response.json()
           console.log("DATA:", resp)
@@ -308,7 +299,7 @@
       async getAssignees() {
         try {
           console.log("ALLASSIGNEES ROUTE PATH: " + this.$route.path);
-          const response = await fetch('http://localhost:8080/assignees/');
+          const response = await fetch('/api/v1/assignees/');
           console.log("RESPONSE:", response)
           const resp = await response.json()
           console.log("DATA:", resp)
@@ -333,7 +324,7 @@
         Object.assign(ticket, this.cachedTicket);
         this.alltickets.splice(this.editedIndex, 1, this.cachedTicket);
         this.dialogEdit = false;
-        this.forceRerender()
+        // this.forceRerender()
       },
 
       editTicket(ticket) {
@@ -346,7 +337,7 @@
       async deleteTicket(id) {
         try {
           console.log("deleteTicket...");
-          const response = await fetch(`http://localhost:8080/tickets/${id}`, {
+          const response = await fetch(`/api/v1/tickets/${id}`, {
             method: 'DELETE'
           })
           console.log("RESPONSE:", response)
@@ -372,29 +363,9 @@
           this.editedIndex = -1;
         })
       },
-      saveOpened: function(updatedTicket) {
+      save: function(updatedTicket) {
         console.log('Updated ticket: ' + JSON.stringify(updatedTicket, null, 2));
         this.updateTicket(updatedTicket);
-        if (updatedTicket.state === 'closed') {
-          // ticket went from 'open' to 'closed'
-          let tempOpenTickets = this.allOpenTickets.filter(ticket => ticket.id !== updatedTicket.id);
-          this.allOpenTickets = tempOpenTickets;
-          this.allClosedTickets.push(updatedTicket);
-          console.log('Swiched ticket from open to closed');
-        }
-        this.dialogEdit = false;
-      },
-      saveClosed: function(updatedTicket) {
-        console.log('Updated ticket: ' + JSON.stringify(updatedTicket, null, 2));
-        this.updateTicket(updatedTicket);
-        this.dialogEdit = false;
-        if (updatedTicket.state === 'open') {
-          // ticket went from 'closed' to 'open'
-          let tempClosedTickets = this.allClosedTickets.filter(ticket => ticket.id !== updatedTicket.id);
-          this.allClosedTickets = tempClosedTickets;
-          this.allOpenTickets.push(updatedTicket);
-          console.log('Swiched ticket from closed to open');
-        }
         this.dialogEdit = false;
       },
       cancel (ticket) {
@@ -414,7 +385,7 @@
         this.editedItem.assignee_id = r[0].id;
       },
       async addAssignee() {
-          return fetch('http://localhost:8080/tickets/assignee', {
+          return fetch('/api/v1/tickets/assignee', {
             method: 'POST',
             body: JSON.stringify({
               name: this.$store.state.user.username,
@@ -425,7 +396,7 @@
       },
       async updateTicket(updatedTicket) {
         try {
-          const response = await fetch(`http://localhost:8080/tickets/${updatedTicket.id}`, {
+          const response = await fetch(`/api/v1/tickets/${updatedTicket.id}`, {
             method: 'PUT',
             body: JSON.stringify(updatedTicket),
             headers: { "Content-type": "application/json; charset=UTF-8" }
