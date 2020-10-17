@@ -10,12 +10,12 @@ All support tickets, users, and support staff will be maintained in a `Databases
 
 Other featured technologies in this code pattern include:
 
-* [Sequelize](https://sequelize.org/): A Node.js Object-Relational Mapper (ORM) for Postgres, MySQL, and other relational databases.
+* [Sequelize](https://sequelize.org/): A Node.js Object-Relational Mapper (ORM) for Postgres (EDB), MySQL, and other relational databases.
 * [Node.js](https://nodejs.org): An open-source JavaScript run-time environment for executing server-side JavaScript code.
 * [Express](https://expressjs.com/): A popular and minimalistic web framework for creating an API and Web server.
-* [Vue](https://vuejs.org/): A JavaScript framework for building Web app user interfaces.
+* [Vue.js](https://vuejs.org/): A JavaScript framework for building Web app user interfaces.
 * [Vuetify](https://vuetifyjs.com): A Material Design component framework for Vue.js apps.
-* [psql](): A command line interface utility for managing PostgrSQL databases.
+* [psql](): A command line interface utility for managing PostgreSQL databases.
 
 When you have completed this code pattern, you will understand how to:
 
@@ -53,7 +53,7 @@ cd edb-tickets
 
 > Note: Example commands below will assume you ran the `cd edb-tickets` command to start from the base directory of your cloned repo.
 
-## 2. Provision the Databases for EDB service
+## 2. Provision the "Databases for EDB" service
 
 * If you do not have an IBM Cloud account, register for a free trial account [here](https://cloud.ibm.com/registration)
 * Create a `Databases for EDB` instance from the [IBM Cloud catalog](https://cloud.ibm.com/catalog/services/databases-for-enterprisedb)
@@ -68,7 +68,7 @@ Copy the local `env.sample` file and name it `.env`:
 cp env.sample .env
 ```
 
-You will need to Update the `.env` file with the credentials from your EDB service. Here is an example `.env` file showing the credentials you will need to collect:
+You will need to update the `.env` file with the credentials from your EDB service. Here is an example `.env` file showing the credentials you will need to collect:
 
 ```bash
 # Copy this file to .env and replace the credentials with
@@ -88,15 +88,72 @@ To find your `DB_HOST` and `DB_PORT` values, navigate to your EDB service panel 
 
 Copy and paste the `Certificate` into a local file, and provide the name as the `DB_CERTFILE` value.
 
-For `DB_USERNAME`, we recommend using the `admin` account. To set the `DB_PASSWORD` for the `admin` account, use the `Update Password` option located in the `Settings` tab.
+For convenience, we're using the `admin` account as the `DB_USERNAME`. To set the `DB_PASSWORD` for the `admin` account, use the `Update Password` option located in the `Settings` tab.
 
 ![edb-admin-password](doc/source/images/edb-admin-password.png)
 
-For the `DB_DATABASE` value, keep the default name `edb-tickets`.
+> NOTE: You can create additional credentials...
+> * Use `Service credentials` in the left menu.
+> * Click on `New credential +`.
+> * Once created, use the expand icon and copy the parts you need.
+
+For the `DB_DATABASE` value, keep the default name `edb-tickets` or choose your own name. The service is provisioned with a database named `ibmclouddb`, but we can create a new one.
+
+## #.? Create the database
+
+You already configured your database connection details in the **.env** file. In `config/config.js`, we create a connection for Sequelize by reading that **.env** file to set our process environment variables, and then using them in the structure needed for Sequelize.
+
+```javascript
+const fs = require('fs');
+require('dotenv').config();
+
+module.exports = {
+  development: {
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: "postgres",
+    dialectOptions: {
+      ssl: {
+        ca: fs.readFileSync(process.env.DB_CERTFILE)
+      }
+    }
+  }
+};
+```
+
+This will be used when our app connects to the database, but we can also use it now to create a database using Sequelize.
+
+Run the following commands to:
+
+1. Run `npm init` to install packages required by the app. This includes Sequelize which we can run from the command-line.
+2. Run `npx sequelize db:create` to create your database.
+
+```bash
+npm init
+npx sequelize db:create
+```
+
+## #.? Create the tables
+
+Our app uses Sequelize to check the database for the expected tables. It will create them for you on startup, but let's use the command-line to do it first.
+
+We created the models using Sequelize and our code uses the models instead of writing SQL or using a database-specific API. The code for the models is in the **models** directory. Sequelize is already configured to use those models, so we can create the tables with this simple command:
+
+```bash
+sequelize ???  maybe not  ???
+```
+
+## X.? Using the app
+
+```bash
+npm run serve
 
 ## 4. Load sample data
 
-You can create, edit, assign, and close your own tickets using the app, 
+You can create, edit, assign, and close your own tickets using the app.
 
 If you would like to start with some sample data, we have created a `psql` script to seed the database with users, support staff, and tickets. Instructions can be found the [README](data/README.md) file located in the `/data` directory.
 
