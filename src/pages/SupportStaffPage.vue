@@ -14,17 +14,17 @@
       </v-card-title>
 
       <v-layout align-end justify-end>
-          <v-btn style="margin-right:20px"
-            rounded
-            color="deep-orange darken-3"
-            dark
-            @click="addStaff()"
+        <v-btn style="margin-right:20px"
+          rounded
+          color="deep-orange darken-3"
+          dark
+          @click="addStaff()"
         >
-            <v-icon left>
-              mdi-plus
-            </v-icon>
-            Add
-          </v-btn>
+          <v-icon left>
+            mdi-plus
+          </v-icon>
+          Add
+        </v-btn>
       </v-layout>
 
       <v-dialog v-model="dialogAdd" max-width="500px">
