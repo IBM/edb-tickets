@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Assignee extends Model {
     /**
@@ -11,14 +12,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.myAssociation = this.belongsTo(models.User);
-      this.myAssociation = this.hasMany(models.Ticket);
+      this.myAssociation = this.belongsTo(models.User, {foreignKey: { name: 'user_id', allowNull: false}});
+      this.myAssociation2 = this.hasMany(models.Ticket);
     }
   }
   Assignee.init({
-    id: {type: DataTypes.STRING, primaryKey: true, allowNull: false},
     dept: DataTypes.STRING,
-    manager: DataTypes.STRING
+    manager: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Assignee',

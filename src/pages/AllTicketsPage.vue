@@ -82,7 +82,7 @@
               </template>
 
               <template v-slot:item.assignee_id="{ item }">
-                {{ getUserName(item.assignee_id) }}
+                {{ getAssigneeName(item.assignee_id) }}
               </template>
 
               <template v-slot:item.priority="{ item }">
@@ -167,7 +167,7 @@
               </template>
 
               <template v-slot:item.assignee_id="{ item }">
-                {{ getUserName(item.assignee_id) }}
+                {{ getAssigneeName(item.assignee_id) }}
               </template>
 
               <template v-slot:item.priority="{ item }">
@@ -270,6 +270,7 @@
         return this.prioritiesColors[priority] || 'white'
       },
       forceRerender() {
+        // force Vue component to be destroyed
         this.componentKey += 1;
       },
       async getTickets() {
@@ -317,6 +318,19 @@
         });
         return name;
       },
+      getAssigneeName(id) {
+        let name = "undefined";
+        this.allAssignees.forEach((assignee) => {
+          if (assignee.id === id) {
+            this.allUsers.forEach((user) => {
+              if (user.id === assignee.user_id) {
+                name = user.name;
+              }
+            });
+          }
+        });
+        return name;
+      },
       editMode(ticket) {
         this.cachedTicket = Object.assign({}, ticket);
       },
@@ -324,7 +338,7 @@
         Object.assign(ticket, this.cachedTicket);
         this.alltickets.splice(this.editedIndex, 1, this.cachedTicket);
         this.dialogEdit = false;
-        // this.forceRerender()
+        this.forceRerender();
       },
 
       editTicket(ticket) {
@@ -332,6 +346,7 @@
         this.editedIndex = this.alltickets.indexOf(ticket);
         this.editedItem = ticket;
         this.dialogEdit = true;
+        this.forceRerender();
       },
 
       async deleteTicket(id) {
