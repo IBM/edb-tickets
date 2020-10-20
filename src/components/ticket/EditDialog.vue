@@ -30,6 +30,14 @@
 
         <v-row>
           <v-select
+            v-model="ticket.priority"
+            :items="priorities"
+            label="Priority"
+          ></v-select>
+        </v-row>
+
+        <v-row>
+          <v-select
             v-model="ticket.state"
             :items="states"
             label="Status"
@@ -76,6 +84,13 @@
         assignees: this.allAssignees,
         assigneeNames: [],
         states: [ 'open', 'closed' ],
+        priorities: [
+          { text: 'Urgent', value: 0 },
+          { text: 'High',   value: 1 },
+          { text: 'Medium', value: 2 },
+          { text: 'Low',    value: 3 },
+          { text: 'None',   value: 4 },
+        ],
         selectedName: ''
       }
     },
