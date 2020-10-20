@@ -13,7 +13,7 @@ exports.create = (req, res) => {
   console.log("REQ.BODY", req.body)
 
   const user = {
-    ...req.body  // TODO: get it from the inpug
+    ...req.body  // TODO: get it from the input
   }
 
   const ticket = {

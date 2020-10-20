@@ -22,9 +22,9 @@
         <v-row>
           <v-select
             v-model="selectedName"
-            :items="userNames"
+            :items="assigneeNames"
             label="Assigned to"
-            @change='userSelected'
+            @change='assigneeSelected'
           ></v-select>
         </v-row>
 
@@ -74,28 +74,45 @@
         dialogEdit: false,
         users: this.allUsers,
         assignees: this.allAssignees,
-        userNames: [],
+        assigneeNames: [],
         states: [ 'open', 'closed' ],
         selectedName: ''
       }
     },
     mounted() {
       this.getUserNames()
+      this.getAssigneeName()
     },
     methods: {
+      // NOTE: ticket table row contains assignee_id
+      //       asssignee table row with that assignee_id contains user_id
+      //       user table row with that id contains user name
       getUserNames() {
         this.allAssignees.forEach((assignee) => {
-          let user = this.allUsers.find(u => u.id === assignee.id);
-          this.userNames.push(user.name);
-          if (user.id === this.editTicket.assignee_id) {
-            this.selectedName = user.name;
+          // assignee.user_id points to id in user file
+          let user = this.allUsers.find(u => u.id === assignee.user_id);
+          this.assigneeNames.push(user.name);
+        });
+      },
+      getAssigneeName() {
+        this.allAssignees.forEach((assignee) => {
+          if (assignee.id === this.ticket.assignee_id) {
+            this.allUsers.forEach((user) => {
+              if (user.id === assignee.user_id) {
+                this.selectedName = user.name;
+              }
+            });
           }
         });
       },
-      userSelected() {
+      assigneeSelected() {
         this.allUsers.forEach((user) => {
           if (this.selectedName === user.name) {
-            this.ticket.assignee_id = user.id;
+            this.allAssignees.forEach((assignee) => {
+              if (assignee.user_id === user.id) {
+                this.ticket.assignee_id = assignee.id;
+              }
+            });
           }
         });
       },
