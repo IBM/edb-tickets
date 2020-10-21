@@ -1,10 +1,8 @@
-*** WORK-IN-PROGRESS***
-
 [![Build Status](https://travis-ci.org/IBM/edb-tickets.svg?branch=main)](https://travis-ci.org/IBM/edb-tickets)
 
-# Develop a fully featured web app built on EDB, an enterprise ready PostgreSQL database
+# Develop a modern web app using EDB, an enterprise-class PostgreSQL database-as-a-service
 
-In this code pattern, we walk you through a working example of a web application that tracks a companies internal support ticket system. The app will allow users to create, assign, manage, and close support tickets.
+In this code pattern, we walk you through a working example of a web application that tracks a company's internal support ticket system. The app will allow users to create, assign, manage, and close support tickets.
 
 All support tickets, users, and support staff will be maintained in a `Databases for EDB` deployment provisioned on IBM Cloud. `EDB` is a PostgreSQL-based database that provides features such as: high availability, automated backup orchestration, and de-coupled scaling of storage, RAM, and vCPUs.
 
@@ -13,24 +11,24 @@ Other featured technologies in this code pattern include:
 * [Sequelize](https://sequelize.org/): A Node.js Object-Relational Mapper (ORM) for Postgres, MySQL, and other relational databases.
 * [Node.js](https://nodejs.org): An open-source JavaScript run-time environment for executing server-side JavaScript code.
 * [Express](https://expressjs.com/): A popular and minimalistic web framework for creating an API and Web server.
-* [Vue](https://vuejs.org/): A JavaScript framework for building Web app user interfaces.
+* [Vue](https://vuejs.org/): A JavaScript framework for building web app user interfaces.
 * [Vuetify](https://vuetifyjs.com): A Material Design component framework for Vue.js apps.
-* [psql](): A command line interface utility for managing PostgrSQL databases.
+* [psql](): A command-line interface utility for managing PostgreSQL databases.
 
 When you have completed this code pattern, you will understand how to:
 
 * Provision an `EDB for Databases` instance on IBM Cloud.
-* Use `Sequelize` to programmatically map out the objects in our relational database.
-* Build a fully functional web app built on Node.js, with an `Express` server with REST APIs, and a `Vue` based UI.
+* Use `Sequelize` to programmatically map objects to your relational database.
+* Create a modern web app built on Node.js, with an `Express` server for REST APIs, and a `Vue`-based UI.
 * Use `psql` scripts to seed the database tables with tickets, users, and support staff.
 
 ![architecture](doc/source/images/architecture.png)
 
 ## Flow
 
-1. Use `psql` to seed `EDB` tables with user, assignee, and ticket data.
-1. User interacts with the `Node.js` app to create and maintain ticket information. The `Vue` based client UI accesses EDB data via the `Express` server REST APIs.
-1. The app server uses `Sequelize` to perform CRUD operations on the EDB instance.
+1. Administrator uses `psql` to seed `EDB` tables with user, assignee, and ticket data.
+1. User interacts with the `Node.js` app to create and maintain ticket information. The `Vue`-based client UI accesses EDB data via the `Express` server REST APIs.
+1. The server uses `Sequelize` to perform CRUD operations on the EDB instance.
 
 ## Steps
 
