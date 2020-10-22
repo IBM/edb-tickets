@@ -117,6 +117,9 @@
     mounted() {
       console.log("EditDialog mounted")
     },
+    updated() {
+      console.log("EditDialog updated")
+    },
     destroyed() {
       console.log("EditDialog destroyed")
     },
