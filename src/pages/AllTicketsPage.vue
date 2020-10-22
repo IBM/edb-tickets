@@ -71,8 +71,7 @@
                   persistent
                 >
                   <edit-ticket
-                    :editTicket="editedItem"
-                    :allUsers="allUsers"
+                    :ticket="editedItem"
                     :allAssignees="allAssignees"
                     v-on:cancel="cancel"
                     v-on:save="save"
@@ -91,14 +90,6 @@
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
-              </template>
-
-              <template v-slot:item.user_id="{ item }">
-                {{ getUserName(item.user_id) }}
-              </template>
-
-              <template v-slot:item.assignee_id="{ item }">
-                {{ getAssigneeName(item.assignee_id) }}
               </template>
 
               <template v-slot:item.priority="{ item }">
@@ -155,8 +146,7 @@
                   persistent
                 >
                   <edit-ticket
-                    :editTicket="editedItem"
-                    :allUsers="allUsers"
+                    :ticket="editedItem"
                     :allAssignees="allAssignees"
                     v-on:cancel="cancel"
                     v-on:save="save"
@@ -176,14 +166,6 @@
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
-              </template>
-
-              <template v-slot:item.user_id="{ item }">
-                {{ getUserName(item.user_id) }}
-              </template>
-
-              <template v-slot:item.assignee_id="{ item }">
-                {{ getAssigneeName(item.assignee_id) }}
               </template>
 
               <template v-slot:item.priority="{ item }">
@@ -227,16 +209,14 @@
   export default {
     name: 'all-tickets-table',
     components: {
-      'editTicket': EditTicketComponent
+      'edit-ticket': EditTicketComponent
     },
     data() {
       return {
         tab: null,
         tabItems: [ 'Open', 'Closed'],
         alltickets: [],
-        allUsers: [],
         allAssignees: [],
-        userName: '',
         dialogEdit: false,
         dialogDelete: false,
         editedIndex: -1,
@@ -246,8 +226,8 @@
         search: '',
         headers: [
           {text: 'Ticket ID', value: 'id', filterable: true, groupable: false},
-          {text: 'Created by', value: 'user_id', filterable: true, groupable: false},
-          {text: 'Assigned to', value: 'assignee_id', filterable: true, groupable: false},
+          {text: 'Created by', value: 'User.name', filterable: true, groupable: false},
+          {text: 'Assigned to', value: 'Assignee.User.name', filterable: true, groupable: false},
           {text: 'Subject', value: 'subject', filterable: true, groupable: false},
           {text: 'Category', value: 'category', filterable: true, groupable: false},
           {text: 'Priority', value: 'priority', filterable: true, groupable: false},
@@ -278,7 +258,6 @@
     },
     mounted() {
       this.getTickets()
-      this.getUsers()
       this.getAssignees()
     },
     methods: {
@@ -301,18 +280,6 @@
           console.error(error)
         }
       },
-      async getUsers() {
-        try {
-          console.log("ALLUSERS ROUTE PATH: " + this.$route.path);
-          const response = await fetch('/api/v1/users/');
-          console.log("RESPONSE:", response)
-          const resp = await response.json()
-          console.log("DATA:", resp)
-          this.allUsers = resp
-        } catch (error) {
-          console.error(error)
-        }
-      },
       async getAssignees() {
         try {
           console.log("ALLASSIGNEES ROUTE PATH: " + this.$route.path);
@@ -325,44 +292,21 @@
           console.error(error)
         }
       },
-      getUserName(id) {
-        let name = "undefined";
-        this.allUsers.forEach((user) => {
-          if (user.id === id) {
-            name = user.name;
-          }
-        });
-        return name;
-      },
-      getAssigneeName(id) {
-        let name = "undefined";
-        this.allAssignees.forEach((assignee) => {
-          if (assignee.id === id) {
-            this.allUsers.forEach((user) => {
-              if (user.id === assignee.user_id) {
-                name = user.name;
-              }
-            });
-          }
-        });
-        return name;
-      },
       editMode(ticket) {
-        this.cachedTicket = Object.assign({}, ticket);
+        this.cachedTicket = { ...ticket };
       },
-      cancelEdit(ticket) {
-        Object.assign(ticket, this.cachedTicket);
+      cancelEdit() {
         this.alltickets.splice(this.editedIndex, 1, this.cachedTicket);
         this.dialogEdit = false;
-        this.forceRerender();
+        // this.forceRerender();
       },
 
       editTicket(ticket) {
         this.editMode(ticket);
         this.editedIndex = this.alltickets.indexOf(ticket);
-        this.editedItem = ticket;
+        this.editedItem = this.alltickets[this.editedIndex];
         this.dialogEdit = true;
-        this.forceRerender();
+        // this.forceRerender();
       },
 
       async deleteTicket(id) {
@@ -410,6 +354,7 @@
         this.dialogEdit = false;
         console.log("close()");
       },
+      /* Assign me feature is currently not used.
       async assignMe () {
         let response = await this.addAssignee();
         const r = await response.json();
@@ -425,18 +370,14 @@
             headers: { "Content-type": "application/json; charset=UTF-8" }
           });
       },
+      */
       async updateTicket(updatedTicket) {
         try {
-          const response = await fetch(`/api/v1/tickets/${updatedTicket.id}`, {
+          await fetch(`/api/v1/tickets/${updatedTicket.id}`, {
             method: 'PUT',
             body: JSON.stringify(updatedTicket),
             headers: { "Content-type": "application/json; charset=UTF-8" }
-          })
-          const data = await response.json()
-          let ticket = data[0];
-          ticket.user_id = ticket.user_id || ticket.UserId;
-          ticket.assignee_id = ticket.assignee_id || ticket.AssigneeId;
-          this.alltickets.splice(this.editedIndex, 1, ticket);
+          });
         } catch (error) {
           console.error(error)
         }
