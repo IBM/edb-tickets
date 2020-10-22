@@ -97,58 +97,6 @@ For convenience, we're using the `admin` account as the `DB_USERNAME`. To set th
 
 For the `DB_DATABASE` value, keep the default name `edb-tickets` or choose your own name. The service is provisioned with a database named `ibmclouddb`, but we can create a new one.
 
-## #.? Create the database
-
-You already configured your database connection details in the **.env** file. In `config/config.js`, we create a connection for Sequelize by reading that **.env** file to set our process environment variables, and then using them in the structure needed for Sequelize.
-
-```javascript
-const fs = require('fs');
-require('dotenv').config();
-
-module.exports = {
-  development: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    dialect: "postgres",
-    dialectOptions: {
-      ssl: {
-        ca: fs.readFileSync(process.env.DB_CERTFILE)
-      }
-    }
-  }
-};
-```
-
-This will be used when our app connects to the database, but we can also use it now to create a database using Sequelize.
-
-Run the following commands to:
-
-1. Run `npm init` to install packages required by the app. This includes Sequelize which we can run from the command-line.
-2. Run `npx sequelize db:create` to create your database.
-
-```bash
-npm init
-npx sequelize db:create
-```
-
-## #.? Create the tables
-
-Our app uses Sequelize to check the database for the expected tables. It will create them for you on startup, but let's use the command-line to do it first.
-
-We created the models using Sequelize and our code uses the models instead of writing SQL or using a database-specific API. The code for the models is in the **models** directory. Sequelize is already configured to use those models, so we can create the tables with this simple command:
-
-```bash
-sequelize ???  maybe not  ???
-```
-
-## X.? Using the app
-
-```bash
-npm run serve
-
 ## 4. Load sample data
 
 You can create, edit, assign, and close your own tickets using the app.
