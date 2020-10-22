@@ -30,6 +30,37 @@
       </v-card-title>
     </v-card>
 
+    <template>
+      <v-spacer></v-spacer>
+
+      <v-dialog
+              :key="componentKey"
+              v-model="dialogEdit"
+              max-width="600px"
+      >
+        <edit-ticket
+                :ticket="alltickets[editedIndex]"
+                :allAssignees="allAssignees"
+                v-on:cancel="() => { dialogEdit = false; }"
+                v-on:save="updateTicket"
+        >
+        </edit-ticket>
+
+      </v-dialog>
+
+      <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-card>
+          <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+            <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </template>
+
     <v-tabs
       color="deep-orange darken-3"
       left
@@ -61,37 +92,6 @@
             show-expand
             dense>
             class="elevation-1">
-              <template v-slot:top>
-                <v-spacer></v-spacer>
-
-                <v-dialog
-                  :key="componentKey"
-                  v-model="dialogEdit"
-                  max-width="600px"
-                  persistent
-                >
-                  <edit-ticket
-                    :ticket="editedItem"
-                    :allAssignees="allAssignees"
-                    v-on:cancel="cancel"
-                    v-on:save="save"
-                  >
-                  </edit-ticket>
-                </v-dialog>
-
-                <v-dialog v-model="dialogDelete" max-width="500px">
-                  <v-card>
-                    <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                      <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                      <v-spacer></v-spacer>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </template>
-
               <template v-slot:item.priority="{ item }">
                 <v-chip x-small :color="getColor(item.priority)" dark>{{ priorities[item.priority] || 'None' }}</v-chip>
               </template>
@@ -136,38 +136,6 @@
             show-expand
             dense>
             class="elevation-1">
-              <template v-slot:top>
-                <v-spacer></v-spacer>
-
-                <v-dialog
-                  :key="componentKey"
-                  v-model="dialogEdit"
-                  max-width="600px"
-                  persistent
-                >
-                  <edit-ticket
-                    :ticket="editedItem"
-                    :allAssignees="allAssignees"
-                    v-on:cancel="cancel"
-                    v-on:save="save"
-                  >
-                  </edit-ticket>
-
-                </v-dialog>
-
-                <v-dialog v-model="dialogDelete" max-width="500px">
-                  <v-card>
-                    <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                      <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                      <v-spacer></v-spacer>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </template>
-
               <template v-slot:item.priority="{ item }">
                 <v-chip x-small :color="getColor(item.priority)" dark>{{ priorities[item.priority] || 'None' }}</v-chip>
               </template>
@@ -205,11 +173,12 @@
 </template>
 
 <script>
-  import EditTicketComponent from '../components/ticket/EditDialog.vue'
+  import EditDialog from '../components/ticket/EditDialog.vue'
+
   export default {
     name: 'all-tickets-table',
     components: {
-      'edit-ticket': EditTicketComponent
+      'edit-ticket': EditDialog
     },
     data() {
       return {
@@ -220,8 +189,6 @@
         dialogEdit: false,
         dialogDelete: false,
         editedIndex: -1,
-        editedItem: {},
-        cachedTicket: {},
         componentKey: 0,
         search: '',
         headers: [
@@ -257,8 +224,8 @@
       }
     },
     mounted() {
-      this.getTickets()
-      this.getAssignees()
+      this.getTickets();
+      this.getAssignees();
     },
     methods: {
       getColor(priority) {
@@ -292,19 +259,8 @@
           console.error(error)
         }
       },
-      editMode(ticket) {
-        this.cachedTicket = { ...ticket };
-      },
-      cancelEdit() {
-        this.alltickets.splice(this.editedIndex, 1, this.cachedTicket);
-        this.dialogEdit = false;
-        // this.forceRerender();
-      },
-
       editTicket(ticket) {
-        this.editMode(ticket);
         this.editedIndex = this.alltickets.indexOf(ticket);
-        this.editedItem = this.alltickets[this.editedIndex];
         this.dialogEdit = true;
         // this.forceRerender();
       },
@@ -338,22 +294,6 @@
           this.editedIndex = -1;
         })
       },
-      save: function(updatedTicket) {
-        console.log('Updated ticket: ' + JSON.stringify(updatedTicket, null, 2));
-        this.updateTicket(updatedTicket);
-        this.dialogEdit = false;
-      },
-      cancel (ticket) {
-        this.cancelEdit(ticket)
-      },
-      open () {
-        console.log("open()");
-      },
-      close () {
-        console.log('Dialog closed')
-        this.dialogEdit = false;
-        console.log("close()");
-      },
       /* Assign me feature is currently not used.
       async assignMe () {
         let response = await this.addAssignee();
@@ -378,6 +318,9 @@
             body: JSON.stringify(updatedTicket),
             headers: { "Content-type": "application/json; charset=UTF-8" }
           });
+          // this.forceRerender();
+          this.alltickets.splice(this.editedIndex, 1, updatedTicket);
+          this.dialogEdit = false;
         } catch (error) {
           console.error(error)
         }
