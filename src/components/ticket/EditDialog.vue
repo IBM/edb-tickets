@@ -24,20 +24,20 @@
       <v-container>
         <v-row>
           <v-text-field
-            v-model="ticket.subject"
+            v-model="ticketCopy.subject"
             label="Subject"
           ></v-text-field>
         </v-row>
         <v-row>
           <v-text-field
-            v-model="ticket.text"
+            v-model="ticketCopy.text"
             label="Details"
           ></v-text-field>
         </v-row>
 
         <v-row>
           <v-select
-            v-model="ticket.Assignee"
+            v-model="ticketCopy.Assignee"
             :items="allAssignees"
             item-text="User.name"
             label="Assigned to"
@@ -48,7 +48,7 @@
 
         <v-row>
           <v-select
-            v-model="ticket.priority"
+            v-model="ticketCopy.priority"
             :items="priorities"
             label="Priority"
           ></v-select>
@@ -56,7 +56,7 @@
 
         <v-row>
           <v-select
-            v-model="ticket.state"
+            v-model="ticketCopy.state"
             :items="states"
             label="Status"
           ></v-select>
@@ -70,14 +70,14 @@
       <v-btn
         color="blue darken-1"
         text
-        @click="$emit('cancel', ticket)"
+        @click="$emit('cancel')"
       >
         Cancel
       </v-btn>
       <v-btn
         color="blue darken-1"
         text
-        @click="$emit('save', ticket)"
+        @click="$emit('save', ticketCopy)"
       >
         Save
       </v-btn>
@@ -94,9 +94,7 @@
     },
     data() {
       return {
-        cachedTicket: {},
         dialogEdit: false,
-        assigneeNames: this.allAssignees.map((assignee) => assignee.User.name),
         states: [ 'open', 'closed' ],
         priorities: [
           { text: 'Urgent', value: 0 },
@@ -108,14 +106,26 @@
         selectedName: ''
       }
     },
+    computed: {
+      ticketCopy: function () {
+        return { ...this.ticket }
+      }
+    },
+    created() {
+      console.log("EditDialog created")
+    },
     mounted() {
+      console.log("EditDialog mounted")
+    },
+    destroyed() {
+      console.log("EditDialog destroyed")
     },
     methods: {
       // NOTE: ticket table row contains assignee_id
-      //       asssignee table row with that assignee_id contains user_id
+      //       assignee table row with that assignee_id contains user_id
       //       user table row with that id contains user name
       assigneeSelected() {
-        this.ticket.assignee_id = this.ticket.Assignee.id;
+        this.ticketCopy.assignee_id = this.ticketCopy.Assignee.id;
       },
     }
   }
