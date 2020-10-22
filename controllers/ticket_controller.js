@@ -107,7 +107,7 @@ exports.findByAssignee = (req, res) => {
 
 // Retrieve all Tickets from the database.
 exports.findAll = (req, res) => {
-  Ticket.findAll({include: [{model: User}]})
+  Ticket.findAll({include: [{model: User}, {model: Assignee, include: [User]}]})
     .then(data => {
       console.log("FIND ALL RESULT:", data);
       res.send(data);

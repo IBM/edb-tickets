@@ -37,9 +37,9 @@ exports.create = (req, res) => {
 
 // Retrieve all Assignees from the database.
 exports.findAll = (req, res) => {
-  Assignee.findAll()
+  Assignee.findAll({include: [{model: User}]})
     .then(data => {
-      console.log("FIND ALL RESULT:", data);
+      console.log("FIND ALL ASSIGNEES RESULT:", data);
       res.send(data);
     })
     .catch(err => {
