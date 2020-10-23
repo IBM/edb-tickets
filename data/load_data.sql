@@ -3,10 +3,10 @@ CREATE TABLE public.temp_users
     name character varying(255) COLLATE pg_catalog."default",
     email character varying(255) COLLATE pg_catalog."default" NOT NULL
 );
-\copy temp_users from 'data/users.csv' with delimiter ',' CSV HEADER;
-insert into users (name, email, created_at, updated_at) 
-    select name, email, now(), now() 
-    from temp_users t 
+\copy temp_users from 'users.csv' with delimiter ',' CSV HEADER;
+insert into users (name, email, created_at, updated_at)
+    select name, email, now(), now()
+    from temp_users t
     on conflict do nothing;
 
 CREATE TABLE public.temp_assignees
@@ -15,9 +15,9 @@ CREATE TABLE public.temp_assignees
     dept character varying(255) COLLATE pg_catalog."default",
     manager character varying(255) COLLATE pg_catalog."default" NOT NULL
 );
-\copy temp_assignees from 'data/assignees.csv' with delimiter ',' CSV HEADER;
-insert into assignees (user_id, dept, manager, created_at, updated_at) 
-    select distinct u.id as user_id, dept, manager, now(), now() 
+\copy temp_assignees from 'assignees.csv' with delimiter ',' CSV HEADER;
+insert into assignees (user_id, dept, manager, created_at, updated_at)
+    select distinct u.id as user_id, dept, manager, now(), now()
     from temp_assignees t, users u
         where t.email = u.email
     on conflict do nothing
@@ -33,7 +33,7 @@ CREATE TABLE public.temp_tickets
     assignee_email character varying(255) COLLATE pg_catalog."default" NOT NULL,
     category integer
 );
-\copy temp_tickets from 'data/tickets.csv' with delimiter ',' CSV HEADER;
+\copy temp_tickets from 'tickets.csv' with delimiter ',' CSV HEADER;
 insert into tickets (user_id, subject, text, priority, state, category, created_at, updated_at, assignee_id)
   select distinct u.id as user_id, subject, substring(text for 255), priority, state, category, now(), now(), x.id as assignee_id
   from temp_tickets t, users u, users a, assignees x
