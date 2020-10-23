@@ -188,7 +188,9 @@ The `All Tickets` menu option displays all tickets in the database. Tabs are use
 
 ![app-all-tickets](doc/source/images/app-all-tickets.png)
 
-The `Support Staff` menu option displays all users who are designated as support staff. This are the only users who can be assigned a ticket.
+The `Support Staff` menu option displays all users who are designated as support staff. It also provides an option to add new support staff users.
+
+>**NOTE**: Only support staff users can be assigned to a ticket.
 
 The `New Ticket` menu option displays a form you can use to create a ticket. Here you are required to enter a `Subject` and `Description`, and select a `Category` and `Priority`. The new ticket will automatically assign you as the `created by` user.
 
