@@ -1,21 +1,21 @@
 user_email,subject,text,priority,state,assignee_email,created_at,updated_at,category
-martha.p.caracal@example.com,Laptop overheating,laptop starts getting very hot a couple minutes after starting,1,closed,liza.j.dunlin@example.com,0
+martha.p.caracal@example.com,Laptop overheating,laptop starts getting very hot a couple minutes after starting,1,open,liza.j.dunlin@example.com,0
 liza.j.dunlin@example.com,Broken hard drive,drive is not detected by OS,0,closed,mollie.a.myna@example.com,0
 mollie.a.myna@example.com,Mouse cord is broken,where can I get a new mouse?,2,closed,liza.j.dunlin@example.com,0
 elvira.j.coyote@example.com,Keyboad has stuck keys,Letter H is broken,1,closed,martha.p.caracal@example.com,0
-claudia.e.fox@example.com,Need bigger monitor,Is it possible to order larger monitor?,3,closed,martha.p.caracal@example.com,0
+claudia.e.fox@example.com,Need bigger monitor,Is it possible to order larger monitor?,3,open,martha.p.caracal@example.com,0
 loretto.l.woodpecker@example.com,Broken laptop,labtop is not turning on,0,closed,mollie.a.myna@example.com,0
-edyth.b.rabbit@example.com,Docking station not connected,USB ports not enabled on my docking station,3,closed,elvira.j.coyote@example.com,0
+edyth.b.rabbit@example.com,Docking station not connected,USB ports not enabled on my docking station,3,open,elvira.j.coyote@example.com,0
 selina.s.spoonbill@example.com,Unable to find class files,What are the proper credentials for the class directory?,1,closed,elvira.j.coyote@example.com,1
 gretchen.f.alligator@example.com,Cannot open file for past 3 days,Need access,1,closed,liza.j.dunlin@example.com,1
 gladys.b.bison@example.com,Cannot find a notebook when I clicked open tool,Do I have access?,1,closed,mollie.a.myna@example.com,1
 almeda.t.beaver@example.com,Wrong wi-fi password,given password not working for me,1,closed,martha.p.caracal@example.com,1
-ressie.p.tarsier@example.com,Notebook just spins,unable to launch Jupyter notebook,2,closed,mollie.a.myna@example.com,1
+ressie.p.tarsier@example.com,Notebook just spins,unable to launch Jupyter notebook,2,open,mollie.a.myna@example.com,1
 anner.z.newt@example.com,Test results admin access,My user credentials should be allowed access,3,closed,elvira.j.coyote@example.com,1
 freeda.f.bat@example.com,Cannot open the Lab,Have I been added to the student list?,0,closed,martha.p.caracal@example.com,1
-maybelle.l.lapwing@example.com,Coursera IBM AI Engineering labs not available,Is my link wrong?,1,closed,liza.j.dunlin@example.com,1
+maybelle.l.lapwing@example.com,AI Engineering labs not available,Is my link wrong?,1,closed,liza.j.dunlin@example.com,1
 rosina.r.giraffe@example.com,Can't open my locker,door is jammed,2,closed,claudia.e.fox@example.com,2
 millie.j.shrike@example.com,Parking are is too dark,can we add some lighting?,2,closed,martha.p.caracal@example.com,2
 mercedes.j.boar@example.com,weekend class room access,what are the official hours?,3,closed,martha.p.caracal@example.com,2
-rosa.b.gaur@example.com,bathroom keys,where are they located?,3,closed,claudia.e.fox@example.com,2
+rosa.b.gaur@example.com,bathroom keys,where are they located?,3,open,claudia.e.fox@example.com,2
 loraine.j.caribou@example.com,A/C is broken,Bld 12 is out,2,closed,claudia.e.fox@example.com,2
