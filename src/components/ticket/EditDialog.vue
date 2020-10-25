@@ -65,6 +65,20 @@
       </v-container>
     </v-card-text>
 
+    <v-alert v-model="errorAlert.visible" type="error"
+               transition="scale-transition" outlined dismissible dense text prominent>
+      <v-row dense>
+        <v-col class="text-lg-caption">
+            {{ this.errorAlert.title }}
+        </v-col>
+      </v-row>
+      <v-row dense>
+        <v-col class="text-sm-caption">
+            {{ this.errorAlert.subtitle }}
+        </v-col>
+      </v-row>
+    </v-alert>
+
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn
@@ -77,7 +91,7 @@
       <v-btn
         color="blue darken-1"
         text
-        @click="$emit('save', ticketCopy)"
+        @click="updateTicket"
       >
         Save
       </v-btn>
@@ -94,7 +108,8 @@
     },
     data() {
       return {
-        dialogEdit: false,
+        ticketCopy: { ...this.ticket },
+        errorAlert: { visible: false },
         states: [ 'open', 'closed' ],
         priorities: [
           { text: 'Urgent', value: 0 },
@@ -106,22 +121,17 @@
         selectedName: ''
       }
     },
-    computed: {
-      ticketCopy: function () {
-        return { ...this.ticket }
-      }
-    },
     created() {
-      console.log("EditDialog created")
+      console.log("EditDialog created", this.ticketCopy)
     },
     mounted() {
-      console.log("EditDialog mounted")
+      console.log("EditDialog mounted", this.ticketCopy)
     },
     updated() {
-      console.log("EditDialog updated")
+      console.log("EditDialog updated", this.ticketCopy)
     },
     destroyed() {
-      console.log("EditDialog destroyed")
+      console.log("EditDialog destroyed", this.ticketCopy)
     },
     methods: {
       // NOTE: ticket table row contains assignee_id
@@ -129,6 +139,34 @@
       //       user table row with that id contains user name
       assigneeSelected() {
         this.ticketCopy.assignee_id = this.ticketCopy.Assignee.id;
+      },
+      async updateTicket() {
+        this.errorAlert = {
+          visible: false,
+        };
+        try {
+          const response = await fetch(`/api/v1/tickets/${this.ticketCopy.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(this.ticketCopy),
+            headers: { "Content-type": "application/json; charset=UTF-8" }
+          });
+          if (response.status >= 200 && response.status < 300) {
+            this.$emit('save', this.ticketCopy);
+          } else {
+            this.errorAlert = {
+              visible: true,
+              title: response.statusText,
+              subtitle: `HTTP Status Code: ${response.status}`
+            }
+          }
+        } catch (error) {
+          console.error(error);
+          this.errorAlert = {
+            visible: true,
+            title: 'ERROR:',
+            subtitle: error
+          }
+        }
       },
     }
   }

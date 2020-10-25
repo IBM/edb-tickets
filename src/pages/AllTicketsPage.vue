@@ -28,7 +28,6 @@
           hide-details
         ></v-text-field>
       </v-card-title>
-    </v-card>
 
     <template>
       <v-spacer></v-spacer>
@@ -80,7 +79,6 @@
       </v-tab>
 
       <v-tab-item>
-        <v-card>
 
           <v-data-table
             :headers="headers"
@@ -111,21 +109,19 @@
                   small
                   @click="editTicket(item)"
                 >
-                mdi-pencil
+                mdi-pencil-outline
                 </v-icon>
                 <v-icon
                   small
                   @click="deleteItem(item)"
                 >
-                  mdi-delete
+                  mdi-trash-can-outline
                 </v-icon>
             </template>
           </v-data-table>
-        </v-card>
       </v-tab-item>
 
       <v-tab-item>
-        <v-card>
           <v-data-table
             :headers="headers"
             :items="this.alltickets.filter((i) => { return i.state === 'closed'; })"
@@ -155,20 +151,34 @@
                   small
                   @click="editTicket(item)"
                 >
-                mdi-pencil
+                mdi-pencil-outline
                 </v-icon>
                 <v-icon
                   small
                   @click="deleteItem(item)"
                 >
-                  mdi-delete
+                  mdi-trash-can-outline
                 </v-icon>
             </template>
           </v-data-table>
-        </v-card>
       </v-tab-item>
 
     </v-tabs>
+
+      <v-snackbar v-model="successSnackBar" color="success"
+                  transition="slide-x-reverse-transition" dense
+                  outlined text>
+        <v-row dense>
+          <v-col cols="2">
+            <v-icon color="success">mdi-check-circle</v-icon>
+          </v-col>
+          <v-col class="text-lg-caption">
+            Success
+          </v-col>
+        </v-row>
+      </v-snackbar>
+
+    </v-card>
   </div>
 </template>
 
@@ -188,6 +198,7 @@
         allAssignees: [],
         dialogEdit: false,
         dialogDelete: false,
+        successSnackBar: false,
         editedIndex: -1,
         componentKey: 0,
         search: '',
@@ -262,9 +273,8 @@
       editTicket(ticket) {
         this.editedIndex = this.alltickets.indexOf(ticket);
         this.dialogEdit = true;
-        // this.forceRerender();
+        this.forceRerender();
       },
-
       async deleteTicket(id) {
         try {
           console.log("deleteTicket...");
@@ -311,19 +321,10 @@
           });
       },
       */
-      async updateTicket(updatedTicket) {
-        try {
-          await fetch(`/api/v1/tickets/${updatedTicket.id}`, {
-            method: 'PUT',
-            body: JSON.stringify(updatedTicket),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
-          });
-          // this.forceRerender();
-          this.alltickets.splice(this.editedIndex, 1, updatedTicket);
-          this.dialogEdit = false;
-        } catch (error) {
-          console.error(error)
-        }
+      updateTicket(updatedTicket) {
+        this.alltickets.splice(this.editedIndex, 1, updatedTicket);
+        this.dialogEdit = false;
+        this.successSnackBar = true;
       },
     }
   }
