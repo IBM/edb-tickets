@@ -38,7 +38,7 @@ When you have completed this code pattern, you will understand how to:
 1. [Load sample data](#4-load-sample-data)
 1. [Run the application](#5-run-the-application)
 1. [Use the app](#6-use-the-app)
-1. [Application structure](#-7-application-structure)
+1. [Application structure](#7-application-structure)
 
 ## 1. Clone the repo
 
