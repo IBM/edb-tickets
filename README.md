@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/IBM/edb-tickets.svg?branch=main)](https://travis-ci.org/IBM/edb-tickets)
-
 # Develop a modern web app using EDB, an enterprise-class PostgreSQL database-as-a-service
 
 In this code pattern, we walk you through a working example of a web application that tracks a company's internal support ticket system. The app will allow users to create, assign, manage, and close support tickets.
