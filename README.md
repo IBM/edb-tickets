@@ -36,7 +36,7 @@ When you have completed this code pattern, you will understand how to:
 1. [Load sample data](#4-load-sample-data)
 1. [Run the application](#5-run-the-application)
 1. [Use the app](#6-use-the-app)
-1. [Application structure](#7-application-structure)
+1. [Review the application structure](#7-review-the-application-structure)
 
 ## 1. Clone the repo
 
@@ -182,7 +182,7 @@ Once logged in, you will now have access to all of the menu options.
 
 ![app-menu-options](doc/source/images/app-menu-options.png)
 
-The `All Tickets` menu option displays all tickets in the database. Tabs are used to seperate out `Open` and `Closed` tickets.
+The `All Tickets` menu option displays all tickets in the database. Tabs are used to separate out `Open` and `Closed` tickets.
 
 ![app-all-tickets](doc/source/images/app-all-tickets.png)
 
@@ -200,7 +200,7 @@ From the `Edit Ticket` panel you can also change the current status, and other t
 
 To delete a ticket, click the `trashcan` icon shown in the `Actions` column for the ticket in the `All Tickets` panel.
 
-## 7. Application structure
+## 7. Review the application structure
 
 ### Database support
 
@@ -228,7 +228,7 @@ The main `Vue` component is `App.vue`, which defines the page banner, the login 
 
 Each sub-panel in the app has its own `Vue` file, which is located in the `/src/pages` directory.
 
-Re-usable sub-components can be found in the `/src/compenents` directory.
+Re-usable sub-components can be found in the `/src/components` directory.
 
 ## License
 
