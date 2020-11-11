@@ -230,6 +230,10 @@ Each sub-panel in the app has its own `Vue` file, which is located in the `/src/
 
 Re-usable sub-components can be found in the `/src/components` directory.
 
+## Learn more
+
+To learn more, visit the [IBM and EDB product page](https://www.ibm.com/products/postgres-enterprise) and check out the [IBM Hybrid Data Management Community](https://community.ibm.com/community/user/hybriddatamanagement/communities/community-home?CommunityKey=99c4cc7a-4544-406c-b1b2-b74f2fcf3cba).
+
 ## License
 
 This code pattern is licensed under the Apache License, Version 2. Separate third-party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1](https://developercertificate.org/) and the [Apache License, Version 2](https://www.apache.org/licenses/LICENSE-2.0.txt).
